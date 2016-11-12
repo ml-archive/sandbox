@@ -13,7 +13,7 @@ final class NMetaMiddleware: Middleware {
             throw Abort.custom(status: .badRequest, message: "Missing N-Meta header")
         }
         
-        NMeta(nMeta: nMeta);
+        try NMeta.setInstance(nMeta: nMeta);
         
         return response
     }
