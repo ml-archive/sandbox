@@ -15,6 +15,8 @@ final class NMetaMiddleware: Middleware {
         
         try NMeta.setInstance(nMeta: nMeta);
         
+        try print(NMeta.getInstance())
+        
         return response
     }
 }
