@@ -29,10 +29,10 @@ final class NMeta {
     
     init(nMeta: String) throws {
         let nMetaArr = nMeta.components(separatedBy: ";")
-
         
         // Set platform
-        if(nMetaArr.count < 1 || !NMeta.platforms().contains(nMetaArr[0])) {
+        let platforms = try NMeta.platforms()
+        if (nMetaArr.count < 1 || !platforms.contains(nMetaArr[0])) {
             throw Abort.custom(status: .badRequest, message: "Platform is not supported")
         }
         
@@ -85,14 +85,22 @@ final class NMeta {
         self.device = nMetaArr[4]
     }
     
-    // TODO CONFIG
-    static func platforms() -> [String] {
-        return [
-            "web",
-            "android",
-            "ios",
-            "windows"
-        ]
+    static func platforms() throws -> [String] {
+        guard let platforms = drop.config["nmeta", "platforms"]?.array else {
+            throw Abort.custom(status: .internalServerError, message: "N-Meta error - nmeta.platforms config is missing or not an array")
+        }
+        
+        var strictPlatforms : [String] = []
+        
+        try platforms.forEach({
+            guard let platformStr : String = $0.string else {
+                throw Abort.custom(status: .internalServerError, message: "N-Meta error - one of the nmeta.platforms could not be casted to string")
+            }
+            
+            strictPlatforms.append(platformStr)
+        })
+        
+        return strictPlatforms;
     }
     
     // TODO CONFIG
