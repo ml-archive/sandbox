@@ -104,4 +104,17 @@ final class NMeta {
             "production"
         ]
     }
+    
+    func toNode() -> Node {
+        return Node([
+            "platform": Node(platform),
+            "environment": Node(environment),
+            "version": Node(version),
+            "major": Node(major),
+            "minor": Node(minor),
+            "patch": Node(patch),
+            "deviceOs": Node(deviceOs),
+            "device": Node(device)
+        ])
+    }
 }

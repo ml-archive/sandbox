@@ -13,9 +13,12 @@ final class NMetaMiddleware: Middleware {
             throw Abort.custom(status: .badRequest, message: "Missing N-Meta header")
         }
         
+        let config = drop.config["nmeta", "test"]?.string ?? "hej2"
+        print(config)
+        
         try NMeta.setInstance(nMeta: nMeta);
         
-        try print(NMeta.getInstance())
+        try print(NMeta.getInstance().toNode())
         
         return response
     }
