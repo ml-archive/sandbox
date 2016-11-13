@@ -1,8 +1,21 @@
-//
-// Created by Casper Rasmussen on 13/11/2016.
-//
-
+import Vapor
 import Foundation
 
-class NStack {
+public final class NStack {
+    
+    let drop: Droplet
+    let config: Config
+    
+    public init(drop: Droplet) throws {
+        self.drop = drop
+        
+        guard let config: Config = drop.config["nstack"] else {
+            throw Abort.custom(status: .internalServerError, message: "Missing nstack config")
+        }
+        
+        self.config = config
+        
+    }
+    
+    
 }

@@ -1,0 +1,17 @@
+{
+    "defaultApplication": "appOne",
+    "applications": [
+        {
+            "name": "appOne",
+            "applicationId": "1",
+            "restKey": "2",
+            "masterKey": "3"
+        },
+        {
+            "name": "appTwo",
+            "applicationId": "1",
+            "restKey": "2",
+            "masterKey": "3"
+        }
+    ]
+}

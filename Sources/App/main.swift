@@ -1,9 +1,11 @@
 import Vapor
 import Meta
+import NStack
 
 let drop = Droplet()
 
 drop.middleware.append(MetaMiddleware(drop: drop))
+try NStack(drop: drop)
 
 drop.post { req in
     if(req.accept.prefers("html")) {
