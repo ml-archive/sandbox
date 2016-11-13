@@ -96,16 +96,54 @@ final class NMeta {
         }
         
         // Make sure all values are strings
-        var stricteEvirionments : [String] = []
+        var strictEnvironments : [String] = []
         try envirionments.forEach({
             guard let environmentStr : String = $0.string else {
                 throw Abort.custom(status: .internalServerError, message: "N-Meta error - one of the nmeta.enviroments could not be casted to string")
             }
             
-            stricteEvirionments.append(environmentStr)
+            strictEnvironments.append(environmentStr)
         })
         
-        return stricteEvirionments;
+        return strictEnvironments;
+    }
+    
+    static func requiredEnvironments() throws -> [String] {
+        // Get config
+        guard let requiredEnvironments = drop.config["nmeta", "requiredEnvironments"]?.array else {
+            throw Abort.custom(status: .internalServerError, message: "N-Meta error - nmeta.requiredEnvironments config is missing or not an array")
+        }
+        
+        // Make sure all values are strings
+        var strictRequiredEnvironments : [String] = []
+        try requiredEnvironments.forEach({
+            guard let enviromentStr : String = $0.string else {
+                throw Abort.custom(status: .internalServerError, message: "N-Meta error - one of the nmeta.requiredEnvironments could not be casted to string")
+            }
+            
+            strictRequiredEnvironments.append(enviromentStr)
+        })
+        
+        return strictRequiredEnvironments;
+    }
+    
+    static func exceptPaths() throws -> [String] {
+        // Get config
+        guard let exceptPaths = drop.config["nmeta", "requiredEnvironments"]?.array else {
+            throw Abort.custom(status: .internalServerError, message: "N-Meta error - nmeta.exceptPaths config is missing or not an array")
+        }
+        
+        // Make sure all values are strings
+        var strictExceptPaths : [String] = []
+        try exceptPaths.forEach({
+            guard let exceptPathStr : String = $0.string else {
+                throw Abort.custom(status: .internalServerError, message: "N-Meta error - one of the exceptPathStr could not be casted to string")
+            }
+            
+            strictExceptPaths.append(exceptPathStr)
+        })
+        
+        return strictExceptPaths;
     }
     
     func toNode() -> Node {

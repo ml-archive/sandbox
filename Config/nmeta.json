@@ -13,7 +13,7 @@
         "production"
     ],
     "exceptedPaths": [
-        "api/test/*"
+        "/test"
     ],
     "requiredEnvironments": [
         "local",
