@@ -2,33 +2,29 @@ import HTTP
 import Vapor
 
 extension Request {
-    var nMeta: NMeta? {
-        get { return storage["nmeta"] as? NMeta }
-        set { storage["nmeta"] = newValue }
+    var meta: Meta? {
+        get { return storage["meta"] as? Meta }
+        set { storage["meta"] = newValue }
     }
-    
-    func isNMetaRequired() throws -> Bool {
-        
-        print(drop.environment.description)
-        
+
+    func isMetaRequired(drop: Droplet) throws -> Bool {
         // Only APIs
         if(accept.prefers("html")) {
             return false;
         }
-        
+
         // Check environments
-        let requiredEnvironments = try NMeta.requiredEnvironments()
+        let requiredEnvironments = try Meta.requiredEnvironments(drop: drop)
         if(!requiredEnvironments.contains(drop.environment.description)) {
             return false
         }
-        
+
         // Check paths
-        let exceptPaths = try NMeta.exceptPaths()
-        print(exceptPaths)
+        let exceptPaths = try Meta.exceptPaths(drop: drop)
         if(exceptPaths.contains(uri.path)) {
             return false
         }
-        
+
         return true;
     }
 }

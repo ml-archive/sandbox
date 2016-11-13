@@ -2,7 +2,7 @@ import Vapor
 
 let drop = Droplet()
 
-drop.middleware.append(NMetaMiddleware())
+//drop.middleware.append(MetaMiddleware(drop: drop))
 
 drop.post { req in
     if(req.accept.prefers("html")) {
