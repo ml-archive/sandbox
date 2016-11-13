@@ -26,7 +26,6 @@ drop.get { req in
 }
 
 drop.get("test/api") { req in
-    print(req.meta)
     return JSON(req.meta?.toNode() ?? [])
 }
 
