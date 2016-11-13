@@ -11,5 +11,14 @@
         "development",
         "staging",
         "production"
+    ],
+    "exceptedPaths": [
+        "api/test/*"
+    ],
+    "requiredEnvironments": [
+        "local",
+        "development",
+        "staging",
+        "production"
     ]
 }
