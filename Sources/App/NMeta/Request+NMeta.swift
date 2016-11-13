@@ -9,26 +9,12 @@ extension Request {
     
     func isNMetaRequired() throws -> Bool {
         
-        return true
-    }
-    
-    func isApi() -> Bool {
-        if((storage["forceApi"] as? Bool)?.bool ?? false)  {
-            return true
-        }
-        
-        if(headers["Content-Type"]?.contains("application/json") ?? false) {
-            return true;
-        }
-        
-        if(self.uri.path.contains("/api")) {
-            return true;
-        }
-        
         return false;
-    }
-    
-    func setAsApi() {
-        storage["forceApi"] = true
+        if(!self.isApi()) {
+            return false;
+        }
+        
+        
+        return true;
     }
 }

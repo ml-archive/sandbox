@@ -4,10 +4,25 @@ let drop = Droplet()
 
 drop.middleware.append(NMetaMiddleware())
 
+drop.post { req in
+    if(req.isApi()) {
+        return JSON(["json"])
+    } else {
+        return try drop.view.make("welcome", [
+            "message": drop.localization[req.lang, "welcome", "title"]
+            ])
+    }
+}
+
 drop.get { req in
-    return try drop.view.make("welcome", [
-    	"message": drop.localization[req.lang, "welcome", "title"]
-    ])
+    if(req.isApi()) {
+        return JSON(["json"])
+    } else {
+        return try drop.view.make("welcome", [
+            "message": drop.localization[req.lang, "welcome", "title"]
+            ])
+    }
+    
 }
 
 drop.get("test") { req in
