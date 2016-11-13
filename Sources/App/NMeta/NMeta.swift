@@ -39,7 +39,8 @@ final class NMeta {
         self.platform = nMetaArr[0];
         
         // Set environment
-        if(nMetaArr.count < 2 || !NMeta.environments().contains(nMetaArr[1])) {
+        let environments = try NMeta.environments()
+        if(nMetaArr.count < 2 || !environments.contains(nMetaArr[1])) {
             throw Abort.custom(status: .badRequest, message: "Environment is not supported")
         }
         
@@ -121,13 +122,6 @@ final class NMeta {
         })
         
         return strictPlatforms;
-        
-        return [
-            "local",
-            "development",
-            "staging",
-            "production"
-        ]
     }
     
     func toNode() -> Node {

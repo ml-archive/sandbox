@@ -1,7 +1,7 @@
 import Vapor
 
 let drop = Droplet()
-print(drop.config["mysql"])
+
 drop.middleware.append(NMetaMiddleware())
 
 drop.get { req in
