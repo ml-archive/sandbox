@@ -1,8 +1,9 @@
 import Vapor
+import Meta
 
 let drop = Droplet()
 
-//drop.middleware.append(MetaMiddleware(drop: drop))
+drop.middleware.append(MetaMiddleware(drop: drop))
 
 drop.post { req in
     if(req.accept.prefers("html")) {

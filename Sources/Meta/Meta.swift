@@ -1,4 +1,6 @@
 import Vapor
+import Foundation
+
 final class Meta {
     let drop: Droplet
     let platform: String

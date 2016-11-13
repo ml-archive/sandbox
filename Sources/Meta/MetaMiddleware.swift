@@ -1,13 +1,13 @@
 import Vapor
 import HTTP
 
-final class MetaMiddleware: Middleware {
+public class MetaMiddleware: Middleware {
     let drop: Droplet
 
-    init(drop: Droplet) {
+    public init(drop: Droplet) {
         self.drop = drop
     }
-    func respond(to request: Request, chainingTo next: Responder) throws -> Response {
+    public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
         let response = try next.respond(to: request)
 
         if(try request.isMetaRequired(drop: drop)) {
