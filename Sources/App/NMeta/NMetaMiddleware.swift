@@ -9,16 +9,18 @@ final class NMetaMiddleware: Middleware {
         
         // Check if it should be
         
-        let headerStr = drop.config["nmeta", "header"]?.string ?? "X-Meta"
+        guard let headerStr = drop.config["nmeta", "header"]?.string else {
+            throw Abort.custom(status: .internalServerError, message: "N-Meta error - Missing nmeta.header config")
+        }
         
         guard let nMeta = request.headers[HeaderKey(headerStr)]?.string else {
             throw Abort.custom(status: .badRequest, message: "Missing \(headerStr) header")
         }
         
-        try NMeta.setInstance(nMeta: nMeta);
-        
-        try print(NMeta.getInstance().toNode())
+        // Apply request
+        try request.nMeta = NMeta(nMeta: nMeta)
         
         return response
     }
 }
+

@@ -2,8 +2,6 @@ import Vapor
 import Foundation
 final class NMeta {
     
-    static var instance: NMeta?
-    
     let platform: String
     let environment: String
     let version: String
@@ -12,20 +10,6 @@ final class NMeta {
     let patch: Int
     let deviceOs: String
     let device: String
-    
-    static func setInstance(nMeta: String) throws {
-        try self.instance = NMeta(nMeta: nMeta)
-    }
-    
-    
-    static func getInstance() throws -> NMeta {
-    
-        guard let unwrappedInstance: NMeta = instance else {
-          throw Abort.custom(status: .badRequest, message: "Missing N-Meta header")
-        }
-        
-        return unwrappedInstance
-    }
     
     init(nMeta: String) throws {
         let nMetaArr = nMeta.components(separatedBy: ";")
@@ -107,21 +91,21 @@ final class NMeta {
     
     static func environments() throws -> [String] {
         // Get config
-        guard let platforms = drop.config["nmeta", "enviroments"]?.array else {
-            throw Abort.custom(status: .internalServerError, message: "N-Meta error - nmeta.enviroments config is missing or not an array")
+        guard let envirionments = drop.config["nmeta", "environments"]?.array else {
+            throw Abort.custom(status: .internalServerError, message: "N-Meta error - nmeta.environments config is missing or not an array")
         }
         
         // Make sure all values are strings
-        var strictPlatforms : [String] = []
-        try platforms.forEach({
-            guard let platformStr : String = $0.string else {
+        var stricteEvirionments : [String] = []
+        try envirionments.forEach({
+            guard let environmentStr : String = $0.string else {
                 throw Abort.custom(status: .internalServerError, message: "N-Meta error - one of the nmeta.enviroments could not be casted to string")
             }
             
-            strictPlatforms.append(platformStr)
+            stricteEvirionments.append(environmentStr)
         })
         
-        return strictPlatforms;
+        return stricteEvirionments;
     }
     
     func toNode() -> Node {
