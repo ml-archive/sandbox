@@ -16,4 +16,8 @@ drop.get("test") { req in
 
 drop.resource("posts", PostController())
 
+
+if(drop.config["app"] == nil) {
+    throw Abort.custom(status: .internalServerError, message: "Config was not loaded, might have an error")
+}
 drop.run()

@@ -1,15 +1,15 @@
 {
-    "header": "X-N-Meta",
+    "header": "N-Meta",
     "platforms": [
         "web",
         "android",
         "ios",
-        "windows" :
+        "windows"
     ],
-    "platforms": [
+    "environments": [
         "local",
         "development",
         "staging",
         "production"
-    ],
+    ]
 }
