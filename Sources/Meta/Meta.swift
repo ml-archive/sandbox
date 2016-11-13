@@ -1,16 +1,16 @@
 import Vapor
 import Foundation
 
-final class Meta {
+public final class Meta {
     let drop: Droplet
-    let platform: String
-    let environment: String
-    let version: String
-    let major: Int
-    let minor: Int
-    let patch: Int
-    let deviceOs: String
-    let device: String
+    public let platform: String
+    public let environment: String
+    public let version: String
+    public let major: Int
+    public let minor: Int
+    public let patch: Int
+    public let deviceOs: String
+    public let device: String
 
     init(drop: Droplet, meta: String) throws {
         self.drop = drop
@@ -148,7 +148,7 @@ final class Meta {
         return strictExceptPaths;
     }
 
-    func toNode() -> Node {
+    public func toNode() -> Node {
         return Node([
                 "platform": Node(platform),
                 "environment": Node(environment),

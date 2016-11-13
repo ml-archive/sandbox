@@ -26,7 +26,8 @@ drop.get { req in
 }
 
 drop.get("test/api") { req in
-    return "test"
+    print(req.meta)
+    return JSON(req.meta?.toNode() ?? [])
 }
 
 drop.resource("posts", PostController())
