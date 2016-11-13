@@ -3,6 +3,12 @@
         "web",
         "android",
         "ios",
-        false :
-    ]
+        "windows" :
+    ],
+    "platforms": [
+        "local",
+        "development",
+        "staging",
+        "production"
+    ],
 }

@@ -86,12 +86,13 @@ final class NMeta {
     }
     
     static func platforms() throws -> [String] {
+        // Get from config
         guard let platforms = drop.config["nmeta", "platforms"]?.array else {
             throw Abort.custom(status: .internalServerError, message: "N-Meta error - nmeta.platforms config is missing or not an array")
         }
         
+        // Make sure all values are strings
         var strictPlatforms : [String] = []
-        
         try platforms.forEach({
             guard let platformStr : String = $0.string else {
                 throw Abort.custom(status: .internalServerError, message: "N-Meta error - one of the nmeta.platforms could not be casted to string")
@@ -103,8 +104,24 @@ final class NMeta {
         return strictPlatforms;
     }
     
-    // TODO CONFIG
-    static func environments() -> [String] {
+    static func environments() throws -> [String] {
+        // Get config
+        guard let platforms = drop.config["nmeta", "enviroments"]?.array else {
+            throw Abort.custom(status: .internalServerError, message: "N-Meta error - nmeta.enviroments config is missing or not an array")
+        }
+        
+        // Make sure all values are strings
+        var strictPlatforms : [String] = []
+        try platforms.forEach({
+            guard let platformStr : String = $0.string else {
+                throw Abort.custom(status: .internalServerError, message: "N-Meta error - one of the nmeta.enviroments could not be casted to string")
+            }
+            
+            strictPlatforms.append(platformStr)
+        })
+        
+        return strictPlatforms;
+        
         return [
             "local",
             "development",
