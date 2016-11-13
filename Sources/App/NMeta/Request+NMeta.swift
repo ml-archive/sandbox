@@ -22,6 +22,13 @@ extension Request {
             return false
         }
         
+        // Check paths
+        let exceptPaths = try NMeta.exceptPaths()
+        print(exceptPaths)
+        if(exceptPaths.contains(uri.path)) {
+            return false
+        }
+        
         return true;
     }
 }

@@ -129,7 +129,7 @@ final class NMeta {
     
     static func exceptPaths() throws -> [String] {
         // Get config
-        guard let exceptPaths = drop.config["nmeta", "requiredEnvironments"]?.array else {
+        guard let exceptPaths = drop.config["nmeta", "exceptedPaths"]?.array else {
             throw Abort.custom(status: .internalServerError, message: "N-Meta error - nmeta.exceptPaths config is missing or not an array")
         }
         
@@ -137,7 +137,7 @@ final class NMeta {
         var strictExceptPaths : [String] = []
         try exceptPaths.forEach({
             guard let exceptPathStr : String = $0.string else {
-                throw Abort.custom(status: .internalServerError, message: "N-Meta error - one of the exceptPathStr could not be casted to string")
+                throw Abort.custom(status: .internalServerError, message: "N-Meta error - one of the nmeta.exceptPaths could not be casted to string")
             }
             
             strictExceptPaths.append(exceptPathStr)

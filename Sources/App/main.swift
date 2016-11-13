@@ -24,7 +24,7 @@ drop.get { req in
     }
 }
 
-drop.get("test") { req in
+drop.get("test/api") { req in
     return "test"
 }
 
