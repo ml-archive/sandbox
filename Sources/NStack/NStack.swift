@@ -42,6 +42,7 @@ public final class NStack {
         
         self.application = app
         
+        // Set picked application
         guard let defaultApplication: String = self.config["defaultApplication"]?.string else {
             throw Abort.serverError
         }
