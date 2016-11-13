@@ -9,10 +9,10 @@ final class NMetaMiddleware: Middleware {
         
         // Check if it should be
         
-        let headerStr = drop.config["nmeta", "header"]?.string ?? "N-Meta"
+        let headerStr = drop.config["nmeta", "header"]?.string ?? "N-Meta2"
         
         guard let nMeta = request.headers[HeaderKey(headerStr)]?.string else {
-            throw Abort.custom(status: .badRequest, message: "Missing N-Meta header")
+            throw Abort.custom(status: .badRequest, message: "Missing \(headerStr) header")
         }
         
         try NMeta.setInstance(nMeta: nMeta);
