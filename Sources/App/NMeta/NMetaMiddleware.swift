@@ -7,6 +7,13 @@ final class NMetaMiddleware: Middleware {
     func respond(to request: Request, chainingTo next: Responder) throws -> Response {
         let response = try next.respond(to: request)
         
+        if(request.isApi()) {
+            throw Abort.custom(status: .ok, message: "api")
+        } else {
+            throw Abort.custom(status: .ok, message: "other")
+        }
+        
+        
         if(try request.isNMetaRequired()) {
             // Guard header config
             guard let headerStr = drop.config["nmeta", "header"]?.string else {
@@ -22,7 +29,6 @@ final class NMetaMiddleware: Middleware {
             try request.nMeta = NMeta(nMeta: nMeta)
         }
         
-        print(request.nMeta)
         return response
     }
 }
