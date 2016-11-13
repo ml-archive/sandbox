@@ -21,7 +21,7 @@ public final class NStack {
         // Set applications
         var applications: [Application] = []
         guard let applicationArr = self.config["applications"]?.array else {
-            throw Abort.serverError
+            throw Abort.custom(status: .internalServerError, message: "NStack - missing applications config")
         }
         
         try applicationArr.forEach({
@@ -44,7 +44,7 @@ public final class NStack {
         
         // Set picked application
         guard let defaultApplication: String = self.config["defaultApplication"]?.string else {
-            throw Abort.serverError
+            throw Abort.custom(status: .internalServerError, message: "NStack - missing defaultApplication config")
         }
         
         try setApplication(name: defaultApplication)
