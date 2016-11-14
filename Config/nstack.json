@@ -8,9 +8,9 @@
     "applications": [
         {
             "name": "appOne",
-            "applicationId": "1",
-            "restKey": "2",
-            "masterKey": "3"
+            "applicationId": "BmZHmoKuU99A5ZnOByOiRxMVSmAWC2yBz3OW",
+            "restKey": "yw9go00oCWt6zPhfbdjRYXiHRWmkQZQSuRke",
+            "masterKey": "SECRET"
         },
         {
             "name": "appTwo",

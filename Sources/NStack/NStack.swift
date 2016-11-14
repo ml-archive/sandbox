@@ -7,9 +7,11 @@ public final class NStack {
     public let config: Config
     public let applications: [Application]
     public var application: Application
+    public let connectionManager: ConnectionMananger
     
     public init(drop: Droplet) throws {
         self.drop = drop
+        self.connectionManager = ConnectionMananger(drop: drop)
         
         // Set config
         guard let config: Config = drop.config["nstack"] else {
@@ -48,6 +50,9 @@ public final class NStack {
         }
         
         try setApplication(name: defaultApplication)
+        
+        
+        try connectionManager.getTranslation(application: self.application, platform: "backend", language: "en-UK")
     }
     
     public func setApplication(name: String) throws {
