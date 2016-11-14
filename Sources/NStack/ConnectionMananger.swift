@@ -9,7 +9,7 @@ public final class ConnectionMananger {
         self.drop = drop
     }
     
-    func getTranslation(application: Application, platform: String, language: String) throws {
+    func getTranslation(application: Application, platform: String, language: String) throws -> Translation {
         
         var headers = self.authHeaders(application: application)
         headers["Accept-Language"] = language
@@ -25,9 +25,7 @@ public final class ConnectionMananger {
             throw Abort.custom(status: .internalServerError, message: "NStack error - Could not unwrap json")
         }
         
-        print(translateResponse.status)
-        
-        //return Translation(application: application, )
+        return Translation(drop: self.drop, application: application, json: json, platform: platform, language: language)
     }
     
     func authHeaders(application: Application) -> [HeaderKey : String] {
