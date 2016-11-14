@@ -1,5 +1,10 @@
 {
     "defaultApplication": "appOne",
+    "transate": {
+        "defaultPlatform": "backend",
+        "defaultLanguage": "en-UK",
+        "timeToLive": 60
+    },
     "applications": [
         {
             "name": "appOne",
