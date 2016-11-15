@@ -1,9 +1,9 @@
 {
     "defaultApplication": "appOne",
-    "transate": {
+    "translate": {
         "defaultPlatform": "backend",
         "defaultLanguage": "en-UK",
-        "timeToLive": 60
+        "cacheInMinutes": 60
     },
     "applications": [
         {

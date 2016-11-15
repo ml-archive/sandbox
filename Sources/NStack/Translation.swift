@@ -1,5 +1,7 @@
 import Vapor
 import Foundation
+import SwiftDate
+import Cache
 
 public struct Translation {
     
@@ -18,15 +20,17 @@ public struct Translation {
         self.language = language
         
         self.date = Date.init()
+        
+        isOutdated()
     }
     
     func isOutdated() -> Bool {
-        let minutesToLive = 60
+        let cacheInMinutes = drop.config["nstack", "translate", "cacheInMinutes"]?.int ?? 61
+
+        print(cacheInMinutes)
+        let secondsInMinutes: TimeInterval = Double(cacheInMinutes) * 60
+        let dateAtCacheExpiration: Date = Date().addingTimeInterval(-secondsInMinutes)
         
-        // TODO
-        
-        return true
+        return dateAtCacheExpiration.isAfter(date: self.date, granularity: .second)
     }
- 
-    
 }
