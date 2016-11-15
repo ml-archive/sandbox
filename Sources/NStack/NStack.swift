@@ -11,7 +11,8 @@ public final class NStack {
     
     public init(drop: Droplet) throws {
         self.drop = drop
-        self.connectionManager = ConnectionMananger(drop: drop)
+        let connectionManager = ConnectionMananger(drop: drop)
+        self.connectionManager = connectionManager
         
         // Set config
         guard let config: Config = drop.config["nstack"] else {
@@ -31,7 +32,7 @@ public final class NStack {
                 throw Abort.serverError
             }
             
-            try applications.append(Application(config: config))
+            try applications.append(Application(drop: drop, connectionManager: connectionManager, config: config))
         })
         
         
@@ -49,18 +50,15 @@ public final class NStack {
             throw Abort.custom(status: .internalServerError, message: "NStack - missing defaultApplication config")
         }
         
-        try setApplication(name: defaultApplication)
-        
-        
-        try connectionManager.getTranslation(application: self.application, platform: "backend", language: "en-UK")
+        _ = try setApplication(name: defaultApplication)
     }
     
-    public func setApplication(name: String) throws {
+    public func setApplication(name: String) throws -> Application {
         for application in applications {
             if(application.name == name) {
                 self.application = application
                 
-                return
+                return self.application
             }
         }
         

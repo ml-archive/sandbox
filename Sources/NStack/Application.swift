@@ -5,9 +5,12 @@ public struct Application{
     let applicationId: String
     let restKey: String
     let masterKey: String
+    let connectionManager: ConnectionMananger
+    public let translate: Translate
     
-    
-    public init(config: Config) throws {
+    public init(drop: Droplet, connectionManager: ConnectionMananger, config: Config) throws {
+        
+        self.connectionManager = connectionManager
         
         // Set name
         guard let name: String = config["name"]?.string else {
@@ -32,5 +35,8 @@ public struct Application{
             throw Abort.custom(status: .internalServerError, message: "NStack - Missing masterKey in application init")
         }
         self.masterKey = masterKey;
+        
+        
+        self.translate = try Translate(drop: drop)
     }
 }

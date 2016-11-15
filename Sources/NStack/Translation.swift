@@ -20,17 +20,25 @@ public struct Translation {
         self.language = language
         
         self.date = Date.init()
-        
-        isOutdated()
     }
     
     func isOutdated() -> Bool {
-        let cacheInMinutes = drop.config["nstack", "translate", "cacheInMinutes"]?.int ?? 61
+        let cacheInMinutes = drop.config["nstack", "translate", "cacheInMinutes"]?.int ?? 60
 
         print(cacheInMinutes)
         let secondsInMinutes: TimeInterval = Double(cacheInMinutes) * 60
         let dateAtCacheExpiration: Date = Date().addingTimeInterval(-secondsInMinutes)
         
         return dateAtCacheExpiration.isAfter(date: self.date, granularity: .second)
+    }
+    
+    func get(section: String, key: String) -> String {
+        do {
+            let section: Node = try self.json.extract(section)
+            let key: String = try section.extract(key).string
+            return key
+        } catch  {
+            return section + "." + key
+        }
     }
 }

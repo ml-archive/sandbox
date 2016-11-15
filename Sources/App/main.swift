@@ -5,7 +5,10 @@ import NStack
 let drop = Droplet()
 
 drop.middleware.append(MetaMiddleware(drop: drop))
-try NStack(drop: drop)
+drop.nstack = try NStack(drop: drop)
+
+
+try print(drop.nstack?.application.translate)
 
 drop.post { req in
     if(req.accept.prefers("html")) {
