@@ -7,6 +7,7 @@ public final class NStack {
     public let config: Config
     public let applications: [Application]
     public var application: Application
+    var defaultApplication: Application
     public let connectionManager: ConnectionMananger
     
     public init(drop: Droplet) throws {
@@ -44,13 +45,14 @@ public final class NStack {
         }
         
         self.application = app
+        self.defaultApplication = app
         
         // Set picked application
-        guard let defaultApplication: String = self.config["defaultApplication"]?.string else {
+        guard let defaultApplicationString: String = self.config["defaultApplication"]?.string else {
             throw Abort.custom(status: .internalServerError, message: "NStack - missing defaultApplication config")
         }
         
-        _ = try setApplication(name: defaultApplication)
+        self.defaultApplication = try setApplication(name: defaultApplicationString)
     }
     
     public func setApplication(name: String) throws -> Application {
@@ -63,5 +65,11 @@ public final class NStack {
         }
         
         throw Abort.custom(status: .internalServerError, message: "NStack - Application \(name) was not found")
+    }
+    
+    public func setApplicationToDefault() -> Application {
+        self.application = self.defaultApplication
+        
+        return application
     }
 }
