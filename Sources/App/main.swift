@@ -8,7 +8,8 @@ drop.middleware.append(MetaMiddleware(drop: drop))
 drop.nstack = try NStack(drop: drop)
 
 
-try print(drop.nstack?.application.translate)
+
+try print(drop.nstack?.application.translate.get(platform: "backend", language: "en-UK", section: "default", key: "ok", replace: [:]))
 
 drop.post { req in
     if(req.accept.prefers("html")) {

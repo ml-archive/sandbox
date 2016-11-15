@@ -1,15 +1,21 @@
 import Vapor
 
-public struct Application{
+public final class Application{
+    // Basic
+    let drop: Droplet
+    let connectionManager: ConnectionMananger
+    
+    // Features
+    public lazy var translate: Translate = Translate(application: self)
+    
+    // Keys
     let name: String
     let applicationId: String
     let restKey: String
     let masterKey: String
-    let connectionManager: ConnectionMananger
-    public let translate: Translate
     
-    public init(drop: Droplet, connectionManager: ConnectionMananger, config: Config) throws {
-        
+    init(drop: Droplet, connectionManager: ConnectionMananger, config: Config) throws {
+        self.drop = drop
         self.connectionManager = connectionManager
         
         // Set name
@@ -35,8 +41,7 @@ public struct Application{
             throw Abort.custom(status: .internalServerError, message: "NStack - Missing masterKey in application init")
         }
         self.masterKey = masterKey;
-        
-        
-        self.translate = try Translate(drop: drop)
     }
 }
+
+

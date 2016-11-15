@@ -3,11 +3,16 @@ import Foundation
 
 public final class Translate {
     
-    let drop: Droplet
+
+    let application: Application
+    let defaultPlatform: String
+    let defaultLanguage: String
     
-    public init(drop: Droplet) throws {
-        self.drop = drop
-        //self.connectionManager = ConnectionMananger(drop: drop)
+    public init(application: Application) {
+        self.application = application
+    
+        self.defaultPlatform = application.drop.config["nstack", "translate", "defaultPlatform"]?.string ?? "backend"
+        self.defaultLanguage = application.drop.config["nstack", "translate", "defaultLanguage"]?.string ?? "en-UK"
         
         /*
         // Set config
