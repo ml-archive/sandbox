@@ -4,36 +4,24 @@ import Foundation
 public final class NStack {
     
     let drop: Droplet
-    public let config: Config
+    public let connectionManager: ConnectionMananger
+    let config: NStackConfig
     public let applications: [Application]
     public var application: Application
     var defaultApplication: Application
-    public let connectionManager: ConnectionMananger
     
     public init(drop: Droplet) throws {
         self.drop = drop
-        let connectionManager = ConnectionMananger(drop: drop)
-        self.connectionManager = connectionManager
+        self.connectionManager = ConnectionMananger(drop: drop)
         
-        // Set config
-        guard let config: Config = drop.config["nstack"] else {
-            throw Abort.custom(status: .internalServerError, message: "Missing nstack config")
-        }
+        self.config = try NStackConfig(drop: drop)
         
-        self.config = config
         
         // Set applications
         var applications: [Application] = []
-        guard let applicationArr = self.config["applications"]?.array else {
-            throw Abort.custom(status: .internalServerError, message: "NStack - missing applications config")
-        }
         
-        try applicationArr.forEach({
-            guard let config = $0 as? Config else {
-                throw Abort.serverError
-            }
-            
-            try applications.append(Application(drop: drop, connectionManager: connectionManager, config: config))
+        config.applications.forEach({
+            applications.append(Application(drop: drop, connectionManager: connectionManager, config: $0))
         })
         
         
@@ -48,11 +36,7 @@ public final class NStack {
         self.defaultApplication = app
         
         // Set picked application
-        guard let defaultApplicationString: String = self.config["defaultApplication"]?.string else {
-            throw Abort.custom(status: .internalServerError, message: "NStack - missing defaultApplication config")
-        }
-        
-        self.defaultApplication = try setApplication(name: defaultApplicationString)
+        self.defaultApplication = try setApplication(name: config.defaultApplication)
     }
     
     public func setApplication(name: String) throws -> Application {

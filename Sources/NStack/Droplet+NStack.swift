@@ -1,5 +1,4 @@
 import Vapor
-import NStack
 
 extension Droplet {
     public var nstack: NStack? {
