@@ -13,7 +13,7 @@ struct NStackConfig {
 
     let defaultApplication: String
     let translate: TranslateConfig
-    let applications: [ApplicationConfig]
+    var applications: [ApplicationConfig]
     
     init(drop: Droplet) throws {
         // Set config
@@ -29,7 +29,7 @@ struct NStackConfig {
         }
         
         self.defaultApplication = defaultApplication
-        
+        self.applications = []
         // Set applications
         var applications: [ApplicationConfig] = []
         guard let applicationArr = drop.config["nstack", "applications"]?.array else {

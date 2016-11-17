@@ -16,12 +16,12 @@ public final class NStack {
         
         self.config = try NStackConfig(drop: drop)
         
-        
         // Set applications
         var applications: [Application] = []
         
-        config.applications.forEach({
-            applications.append(Application(drop: drop, connectionManager: connectionManager, config: $0))
+        self.config.applications.forEach({
+            print($0)
+            //applications.append(Application(drop: drop, connectionManager: connectionManager, config: $0))
         })
         
         
