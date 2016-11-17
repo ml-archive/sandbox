@@ -19,11 +19,10 @@ public final class NStack {
         // Set applications
         var applications: [Application] = []
         
-        self.config.applications.forEach({
-            print($0)
-            //applications.append(Application(drop: drop, connectionManager: connectionManager, config: $0))
-        })
         
+        for config in self.config.applications {
+          applications.append(Application(drop: drop, connectionManager: connectionManager, config: config))
+        }
         
         self.applications = applications
     
