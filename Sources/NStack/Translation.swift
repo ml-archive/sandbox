@@ -38,7 +38,11 @@ public struct Translation {
             let key: String = try section.extract(key).string
             return key
         } catch  {
-            return section + "." + key
+            return Translation.fallback(section: section, key: key)
         }
+    }
+    
+    public static func fallback(section: String, key: String) -> String{
+        return section + "." + key
     }
 }
