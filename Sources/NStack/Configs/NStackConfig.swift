@@ -3,6 +3,7 @@ public struct NStackConfig {
     enum ConfigError: String {
         case nstack = "nstack"
         case defaultApplication = "defaultApplication"
+        case log = "log"
         case applications = "applications"
         
         var error: Abort {
@@ -11,6 +12,7 @@ public struct NStackConfig {
         }
     }
 
+    let log: Bool
     let defaultApplication: String
     let translate: TranslateConfig
     let applications: [ApplicationConfig]
@@ -35,6 +37,14 @@ public struct NStackConfig {
         
         self.applications = applications
         
+        // Set log
+        // Set applications
+        guard let log = config["log"]?.bool else {
+            throw ConfigError.log.error
+        }
+        self.log = log
+        
+        // Set translate
         self.translate = try TranslateConfig(optionalConfig: config["translate"])
     }
     
