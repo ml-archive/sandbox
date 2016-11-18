@@ -33,12 +33,13 @@ public final class Translate {
             
             // Replace
             for(replaceKey, replaceValue) in replace {
-                value = value.replacingOccurrences(of: replaceKey, with: replaceValue)
+                value = value.replacingOccurrences(of: "{" + replaceKey + "}", with: replaceValue)
             }
             
             return value
 
         } catch {
+            print(error)
             return Translation.fallback(section: section, key: key)
         }
     }
@@ -49,8 +50,14 @@ public final class Translate {
             return memoryTranslate
         }
         
+        // Try cache
         
-        throw Abort.notFound
+        // Fetch from API
+        
+        let apiTranslate = try application.connectionManager.getTranslation(application: application, platform: platform, language: language)
+        translations[Translate.cacheKey(platform: platform, language: language)] = apiTranslate
+        
+        return apiTranslate
     }
     
     private final func freshFromMemory(platform: String, language: String) -> Translation?

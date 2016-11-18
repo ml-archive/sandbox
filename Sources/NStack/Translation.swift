@@ -34,11 +34,12 @@ public struct Translation {
     
     func get(section: String, key: String) -> String {
         do {
-            let section: Node = try self.json.extract(section)
-            let key: String = try section.extract(key).string
+            let data: Node = try self.json.extract("data")
+            let section: Node = try data.extract(section)
+            let key: String = try section.extract(key)
             return key
         } catch  {
-            
+            print(error)
             return Translation.fallback(section: section, key: key)
         }
     }
