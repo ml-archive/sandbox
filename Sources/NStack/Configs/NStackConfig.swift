@@ -1,5 +1,5 @@
 import Vapor
-struct NStackConfig {
+public struct NStackConfig {
     enum ConfigError: String {
         case nstack = "nstack"
         case defaultApplication = "defaultApplication"
@@ -14,16 +14,10 @@ struct NStackConfig {
     let defaultApplication: String
     let translate: TranslateConfig
     let applications: [ApplicationConfig]
-    init(drop: Droplet) throws {
-        // Set config
-        let optionalConfig = drop.config["nstack"]
-        
-        guard let config: Config = optionalConfig else {
-            throw ConfigError.nstack.error
-        }
-        
+    
+    init(config: Config) throws {
         // set default application
-        guard let defaultApplication: String = drop.config["nstack", "defaultApplication"]?.string else {
+        guard let defaultApplication: String = config["defaultApplication"]?.string else {
             throw ConfigError.defaultApplication.error
         }
         
@@ -31,7 +25,7 @@ struct NStackConfig {
         
         // Set applications
         var applications: [ApplicationConfig] = []
-        guard let applicationArr = drop.config["nstack", "applications"]?.array else {
+        guard let applicationArr = config["applications"]?.array else {
             throw ConfigError.applications.error
         }
         
@@ -43,6 +37,19 @@ struct NStackConfig {
         
         self.translate = try TranslateConfig(optionalConfig: config["translate"])
     }
+    
+    init(drop: Droplet) throws {
+        // Set config
+        let optionalConfig = drop.config["nstack"]
+        
+        guard let config: Config = optionalConfig else {
+            throw ConfigError.nstack.error
+        }
+        
+        try self.init(config: config)
+    }
+    
+  
 }
 
 

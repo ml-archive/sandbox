@@ -2,30 +2,25 @@ import Vapor
 import Foundation
 
 public final class NStack {
-    
-    let drop: Droplet
     public let connectionManager: ConnectionMananger
-    let config: NStackConfig
-    public let applications: [Application]
-    public var application: Application
+    public let config: NStackConfig
     var defaultApplication: Application
     
-    public init(drop: Droplet) throws {
-        self.drop = drop
-        self.connectionManager = ConnectionMananger(drop: drop)
-        
-        self.config = try NStackConfig(drop: drop)
+    public let applications: [Application]
+    public var application: Application
+    
+    public init(config: NStackConfig, connectionMananger: ConnectionMananger) throws {
+        self.config = config
+        self.connectionManager = connectionMananger
         
         // Set applications
         var applications: [Application] = []
-        
-        
-        for config in self.config.applications {
-          applications.append(Application(drop: drop, connectionManager: connectionManager, config: config))
+        for applicaitonConfig in self.config.applications {
+            applications.append(Application(connectionManager: connectionMananger, applicationConfig: applicaitonConfig, nStackConfig: config))
         }
         
         self.applications = applications
-    
+        
         // Set first application
         guard let app: Application = applications.first else {
             throw Abort.serverError
@@ -36,6 +31,14 @@ public final class NStack {
         
         // Set picked application
         self.defaultApplication = try setApplication(name: config.defaultApplication)
+    }
+    
+    public convenience init(drop: Droplet) throws {
+        let nStackConfig = try NStackConfig(drop: drop)
+        let connectionManager = ConnectionMananger(drop: drop)
+        
+        
+        try self.init(config: nStackConfig, connectionMananger: connectionManager)
     }
     
     public func setApplication(name: String) throws -> Application {

@@ -4,15 +4,13 @@ import Foundation
 public final class Translate {
     
     let application: Application
-    let defaultPlatform: String
-    let defaultLanguage: String
+    let config: TranslateConfig
     var translations: [String: Translation] = [:]
     
     public init(application: Application) {
         self.application = application
-    
-        self.defaultPlatform = application.drop.config["nstack", "translate", "defaultPlatform"]?.string ?? "backend"
-        self.defaultLanguage = application.drop.config["nstack", "translate", "defaultLanguage"]?.string ?? "en-UK"
+        config = application.nStackConfig.translate
+        
         
         /*
         // Set config

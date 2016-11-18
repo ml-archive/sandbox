@@ -2,8 +2,9 @@ import Vapor
 
 public struct Application{
     // Basic
-    let drop: Droplet
     let connectionManager: ConnectionMananger
+    let applicationConfig: ApplicationConfig
+    let nStackConfig: NStackConfig
     
     // Features
     public lazy var translate: Translate = Translate(application: self)
@@ -14,13 +15,15 @@ public struct Application{
     let restKey: String
     let masterKey: String
     
-    init(drop: Droplet, connectionManager: ConnectionMananger, config: ApplicationConfig){
-        self.drop = drop
+    init(connectionManager: ConnectionMananger, applicationConfig: ApplicationConfig, nStackConfig: NStackConfig){
         self.connectionManager = connectionManager
-        self.name = config.name
-        self.applicationId = config.applicationId
-        self.restKey = config.restKey
-        self.masterKey = config.masterKey
+        self.applicationConfig = applicationConfig
+        self.nStackConfig = nStackConfig
+        
+        self.name = applicationConfig.name
+        self.applicationId = applicationConfig.applicationId
+        self.restKey = applicationConfig.restKey
+        self.masterKey = applicationConfig.masterKey
     }
 }
 
