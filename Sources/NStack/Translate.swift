@@ -21,8 +21,6 @@ public final class Translate {
         self.config = config
         
          */
-        
-        
     }
     
     public func get(platform: String, language: String, section: String, key: String, replace: [String: String]) -> String {

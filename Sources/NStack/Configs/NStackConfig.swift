@@ -17,6 +17,12 @@ public struct NStackConfig {
     let translate: TranslateConfig
     let applications: [ApplicationConfig]
     
+    func nstackLog(str: String){
+        if log {
+            print(str)
+        }
+    }
+    
     init(config: Config) throws {
         // set default application
         guard let defaultApplication: String = config["defaultApplication"]?.string else {

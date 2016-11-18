@@ -38,6 +38,7 @@ public struct Translation {
             let key: String = try section.extract(key).string
             return key
         } catch  {
+            
             return Translation.fallback(section: section, key: key)
         }
     }
