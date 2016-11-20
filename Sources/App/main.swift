@@ -4,11 +4,13 @@ import NStack
 import SwiftyBeaverVapor
 import SwiftyBeaver
 import Foundation
+import VaporRedis
 
 let drop = Droplet()
 
 drop.middleware.append(MetaMiddleware(drop: drop))
 try drop.addProvider(NStackProvider(drop: drop))
+try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 /*
 

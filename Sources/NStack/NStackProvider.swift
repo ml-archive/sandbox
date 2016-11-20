@@ -1,8 +1,8 @@
 import Vapor
-import NStack
+
 public final class NStackProvider: Vapor.Provider {
     
-    let nstack: NStack
+    var nstack: NStack? = nil
     
     
     public func boot(_ drop: Droplet) {
@@ -15,7 +15,7 @@ public final class NStackProvider: Vapor.Provider {
     }
     
     public init(config: Config) throws {
-        nstack = try NStack(drop: drop)
+        
     }
     
     

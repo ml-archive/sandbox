@@ -51,9 +51,11 @@ public final class Translate {
         }
         
         // Try cache
+        if let cacheTranslate = freshFromCache(platform: platform, language: language) {
+            return cacheTranslate
+        }
         
         // Fetch from API
-        
         let apiTranslate = try application.connectionManager.getTranslation(application: application, platform: platform, language: language)
         translations[Translate.cacheKey(platform: platform, language: language)] = apiTranslate
         
@@ -77,7 +79,13 @@ public final class Translate {
         }
         
         return translation
+    }
+    
+    private final func freshFromCache(platform: String, language: String) -> Translation?
+    {
+        //let cacheKey = Translate.cacheKey(platform: platform, language: language)
         
+        return nil
     }
     
     private static func cacheKey(platform: String, language: String) -> String {
