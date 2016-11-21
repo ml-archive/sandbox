@@ -1,22 +1,25 @@
 import Vapor
 import Foundation
+import Cache
 
 public final class NStack {
     public let connectionManager: ConnectionMananger
     public let config: NStackConfig
+    public let cache: CacheProtocol
     var defaultApplication: Application
     
     public let applications: [Application]
     public var application: Application
     
-    public init(config: NStackConfig, connectionMananger: ConnectionMananger) throws {
+    public init(config: NStackConfig, connectionMananger: ConnectionMananger, cache: CacheProtocol) throws {
         self.config = config
         self.connectionManager = connectionMananger
+        self.cache = cache
         
         // Set applications
         var applications: [Application] = []
         for applicaitonConfig in self.config.applications {
-            applications.append(Application(connectionManager: connectionMananger, applicationConfig: applicaitonConfig, nStackConfig: config))
+            applications.append(Application(cache: cache, connectionManager: connectionMananger, applicationConfig: applicaitonConfig, nStackConfig: config))
         }
         
         self.applications = applications
@@ -36,9 +39,9 @@ public final class NStack {
     public convenience init(drop: Droplet) throws {
         let nStackConfig = try NStackConfig(drop: drop)
         let connectionManager = ConnectionMananger(drop: drop)
+        let cache = drop.cache
         
-        
-        try self.init(config: nStackConfig, connectionMananger: connectionManager)
+        try self.init(config: nStackConfig, connectionMananger: connectionManager, cache: cache)
     }
     
     public func setApplication(name: String) throws -> Application {

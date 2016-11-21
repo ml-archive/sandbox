@@ -47,4 +47,12 @@ public struct Translation {
     public static func fallback(section: String, key: String) -> String{
         return section + "." + key
     }
+    
+    func toNode() throws -> Node{
+        return Node([
+            "language": Node(language),
+            "platform": Node(platform),
+            "json": json.node
+        ])
+    }
 }

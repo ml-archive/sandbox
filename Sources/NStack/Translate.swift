@@ -1,26 +1,18 @@
 import Vapor
 import Foundation
+import Cache
 
 public final class Translate {
     
     let application: Application
     let config: TranslateConfig
+    let cache: CacheProtocol
     var translations: [String: Translation] = [:]
     
     public init(application: Application) {
         self.application = application
+        self.cache = application.cache
         config = application.nStackConfig.translate
-        
-        
-        /*
-        // Set config
-        guard let config: Config = drop.config["nstack"] else {
-            throw Abort.custom(status: .internalServerError, message: "Missing nstack config")
-        }
-        
-        self.config = config
-        
-         */
     }
     
     public func get(platform: String, language: String, section: String, key: String, replace: [String: String]) -> String {
@@ -39,7 +31,6 @@ public final class Translate {
             return value
 
         } catch {
-            print(error)
             return Translation.fallback(section: section, key: key)
         }
     }
@@ -57,7 +48,12 @@ public final class Translate {
         
         // Fetch from API
         let apiTranslate = try application.connectionManager.getTranslation(application: application, platform: platform, language: language)
+        // Put in memoery cache
         translations[Translate.cacheKey(platform: platform, language: language)] = apiTranslate
+        
+        // Put in drop cache
+        try cache.set(Translate.cacheKey(platform: platform, language: language), apiTranslate.toNode())
+        
         
         return apiTranslate
     }
@@ -83,7 +79,13 @@ public final class Translate {
     
     private final func freshFromCache(platform: String, language: String) -> Translation?
     {
-        //let cacheKey = Translate.cacheKey(platform: platform, language: language)
+        let cacheKey = Translate.cacheKey(platform: platform, language: language)
+        do {
+                try print(cache.get(cacheKey))
+        } catch {
+            print(error)
+        }
+        
         
         return nil
     }

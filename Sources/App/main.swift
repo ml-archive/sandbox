@@ -13,6 +13,11 @@ try drop.addProvider(NStackProvider(drop: drop))
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 /*
+try drop.cache.set("test", Node("test"))
+print(try drop.cache.get("test"))
+*/
+
+/*
 
 // Log
 // set-up SwiftyBeaver logging destinations (console, file, cloud, ...)

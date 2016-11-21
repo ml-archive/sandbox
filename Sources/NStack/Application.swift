@@ -1,7 +1,8 @@
 import Vapor
-
+import Cache
 public struct Application{
     // Basic
+    let cache: CacheProtocol
     let connectionManager: ConnectionMananger
     let applicationConfig: ApplicationConfig
     let nStackConfig: NStackConfig
@@ -15,7 +16,8 @@ public struct Application{
     let restKey: String
     let masterKey: String
     
-    init(connectionManager: ConnectionMananger, applicationConfig: ApplicationConfig, nStackConfig: NStackConfig){
+    init(cache: CacheProtocol, connectionManager: ConnectionMananger, applicationConfig: ApplicationConfig, nStackConfig: NStackConfig){
+        self.cache = cache
         self.connectionManager = connectionManager
         self.applicationConfig = applicationConfig
         self.nStackConfig = nStackConfig

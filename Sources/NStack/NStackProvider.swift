@@ -15,7 +15,8 @@ public final class NStackProvider: Vapor.Provider {
     }
     
     public init(config: Config) throws {
-        
+        // Don't use this init, it's only there cause of protocol
+        throw Abort.serverError
     }
     
     
