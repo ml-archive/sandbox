@@ -17,9 +17,9 @@ public struct NStackConfig {
     let translate: TranslateConfig
     let applications: [ApplicationConfig]
     
-    func nstackLog(str: String){
+    func log(_ value: String){
         if log {
-            print(str)
+            print(value)
         }
     }
     
@@ -37,6 +37,7 @@ public struct NStackConfig {
             throw ConfigError.applications.error
         }
         
+        // Set applications
         try applicationArr.forEach({
             try applications.append(ApplicationConfig(polymorphic: $0))
         })
@@ -44,7 +45,6 @@ public struct NStackConfig {
         self.applications = applications
         
         // Set log
-        // Set applications
         guard let log = config["log"]?.bool else {
             throw ConfigError.log.error
         }

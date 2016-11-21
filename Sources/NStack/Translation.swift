@@ -10,7 +10,7 @@ public struct Translation {
     let json: JSON
     let platform: String
     let language: String
-    let date: Date
+    let date: DateInRegion
     
     init(drop: Droplet, application: Application, json: JSON, platform: String, language: String) {
         self.drop = drop
@@ -19,17 +19,28 @@ public struct Translation {
         self.platform = platform
         self.language = language
         
-        self.date = Date.init()
+        self.date = DateInRegion.init()
+    }
+    
+    init(drop: Droplet, application: Application, node: Node) throws {
+        self.drop = drop
+        self.application = application
+        
+        self.json = try node.extract("json")
+        self.platform = try node.extract("platform")
+        self.language = try node.extract("language")
+        let dateString: String = try node.extract("date")
+        
+        self.date = try DateInRegion(string: dateString, format: .iso8601(options: .withInternetDateTime))
     }
     
     func isOutdated() -> Bool {
         let cacheInMinutes = drop.config["nstack", "translate", "cacheInMinutes"]?.int ?? 60
 
-        print(cacheInMinutes)
         let secondsInMinutes: TimeInterval = Double(cacheInMinutes) * 60
         let dateAtCacheExpiration: Date = Date().addingTimeInterval(-secondsInMinutes)
         
-        return dateAtCacheExpiration.isAfter(date: self.date, granularity: .second)
+        return dateAtCacheExpiration.isAfter(date: self.date.absoluteDate, granularity: .second)
     }
     
     func get(section: String, key: String) -> String {
@@ -39,7 +50,7 @@ public struct Translation {
             let key: String = try section.extract(key)
             return key
         } catch  {
-            print(error)
+            application.nStackConfig.log("NStack.Translate.get error:" + error.localizedDescription)
             return Translation.fallback(section: section, key: key)
         }
     }
@@ -52,7 +63,8 @@ public struct Translation {
         return Node([
             "language": Node(language),
             "platform": Node(platform),
-            "json": json.node
+            "json": json.node,
+            "date": Node(date.iso8601())
         ])
     }
 }

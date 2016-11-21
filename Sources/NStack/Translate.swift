@@ -16,6 +16,7 @@ public final class Translate {
     }
     
     public func get(platform: String, language: String, section: String, key: String, replace: [String: String]) -> String {
+        application.nStackConfig.log("Requesting translate for platform: \(platform) - language: \(language) - section: \(section) - key: \(key)")
         do {
             // Fetch
             let translation = try fetch(platform: platform, language: language)
@@ -36,24 +37,25 @@ public final class Translate {
     }
     
     private final func fetch(platform: String, language: String) throws -> Translation {
-        // First try memory
+        // Try memory cache
         if let memoryTranslate = freshFromMemory(platform: platform, language: language) {
+            application.nStackConfig.log("Memoery cache used")
             return memoryTranslate
         }
         
-        // Try cache
+        // Try drop cache
         if let cacheTranslate = freshFromCache(platform: platform, language: language) {
+            application.nStackConfig.log("Drop cache used")
             return cacheTranslate
         }
         
         // Fetch from API
+        application.nStackConfig.log("Fetching from API")
         let apiTranslate = try application.connectionManager.getTranslation(application: application, platform: platform, language: language)
-        // Put in memoery cache
-        translations[Translate.cacheKey(platform: platform, language: language)] = apiTranslate
+        application.nStackConfig.log("Fetched from API success")
         
-        // Put in drop cache
-        try cache.set(Translate.cacheKey(platform: platform, language: language), apiTranslate.toNode())
-        
+        // Set cache
+        setCache(translate: apiTranslate)
         
         return apiTranslate
     }
@@ -81,18 +83,38 @@ public final class Translate {
     {
         let cacheKey = Translate.cacheKey(platform: platform, language: language)
         do {
-                try print(cache.get(cacheKey))
+            guard let translateNode: Node = try cache.get(cacheKey) else {
+                return nil
+            }
+            
+            let translate: Translation = try Translation(drop: application.connectionManager.drop, application: application, node: translateNode)
+            
+            return translate
+            
         } catch {
-            print(error)
+            application.nStackConfig.log("NStack.Translate.freshFromCache error: " + error.localizedDescription)
+            return nil
         }
-        
-        
-        return nil
+    }
+    
+    private final func setCache(translate: Translation) {
+        do  {
+            let cacheKey = Translate.cacheKey(platform: translate.platform, language: translate.language)
+            
+            application.nStackConfig.log("Caching translate on key: \(cacheKey)")
+            
+            // Put in memoery cache
+            translations[cacheKey] = translate
+            
+            // Put in drop cache
+            try cache.set(cacheKey, translate.toNode())
+        } catch {
+            application.nStackConfig.log(error.localizedDescription)
+        }
     }
     
     private static func cacheKey(platform: String, language: String) -> String {
-        return platform + "_" + language
+        
+        return platform.lowercased() + "_" + language.lowercased()
     }
-    
-    
 }
