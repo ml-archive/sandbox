@@ -18,6 +18,11 @@ public final class ConnectionMananger {
         let translateResponse = try drop.client.get(url, headers: headers, query: [:])
         
         if(translateResponse.status != .ok) {
+            
+            if(translateResponse.status.statusCode == 445) {
+                throw Abort.notFound
+            }
+            
             throw Abort.custom(status: .internalServerError, message: "NStack error - Response was not OK")
         }
         
