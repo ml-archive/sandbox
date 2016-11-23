@@ -17,6 +17,7 @@ final class Post: Model {
     }
 
     func makeNode(context: Context) throws -> Node {
+                
         return try Node(node: [
             "id": id,
             "content": content
