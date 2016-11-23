@@ -8,7 +8,7 @@ import VaporRedis
 
 let drop = Droplet()
 
-drop.middleware.append(MetaMiddleware(drop: drop))
+try drop.middleware.append(MetaMiddleware(drop: drop))
 try drop.addProvider(NStackProvider(drop: drop))
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
@@ -62,9 +62,11 @@ drop.get { req in
     }
 }
 
+/*
 drop.get("test/api") { req in
     return JSON(req.meta?.toNode() ?? [])
 }
+ */
 
 drop.resource("posts", PostController())
 
