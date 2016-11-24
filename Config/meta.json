@@ -12,7 +12,7 @@
         "staging",
         "production"
     ],
-    "exceptedPaths": [
+    "exceptPaths": [
         "/test"
     ],
     "requiredEnvironments": [
