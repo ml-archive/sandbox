@@ -5,10 +5,12 @@ import SwiftyBeaverVapor
 import SwiftyBeaver
 import Foundation
 import VaporRedis
+import Bugsnag
 
 let drop = Droplet()
 
 try drop.middleware.append(MetaMiddleware(drop: drop))
+try drop.middleware.append(BugsnagMiddleware(drop: drop))
 try drop.addProvider(NStackProvider(drop: drop))
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
@@ -36,8 +38,8 @@ let log = drop.log.self
 
 //try print(drop.nstack?.application.translate.get(platform: .backend, section: "default", key: "saveSuccess", replace: ["model": "test"]))
 //try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
-try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
-try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
+//try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
+//try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
 
 let translate = drop.nstack?.application.translate.self
 
@@ -62,11 +64,14 @@ drop.get { req in
     }
 }
 
-/*
-drop.get("test/api") { req in
-    return JSON(req.meta?.toNode() ?? [])
+
+drop.get("test") { req in
+    throw Abort.badRequest
+    return JSON([
+        "test": "test"
+    ])
 }
- */
+
 
 drop.resource("posts", PostController())
 
