@@ -1,5 +1,6 @@
 import Vapor
 import HTTP
+import Foundation
 
 public final class ConnectionMananger {
     
@@ -21,17 +22,18 @@ public final class ConnectionMananger {
     }
     
     func body(message: String, request: Request) throws -> JSON {
-        let stacktraceList: [Node]
+        var stacktraceList: [Node] = []
         
         for entry in Thread.callStackSymbols {
-            Node([
+            stacktraceList.append(Node([
                 "file": Node(entry),
                 "lineNumber": 1,
                 "columnNumber": 1,
                 "method": Node(entry),
                 "code": Node([
                     "1": Node(entry)
-            ])
+                    ])
+            ]))
         }
         
         let stacktrace = Node(stacktraceList)

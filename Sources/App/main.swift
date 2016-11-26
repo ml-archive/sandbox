@@ -6,11 +6,11 @@ import SwiftyBeaver
 import Foundation
 import VaporRedis
 import Bugsnag
-import Error
+//import Error
 
 let drop = Droplet()
 
-drop.middleware.append(ErrorMiddleware())
+//drop.middleware.append(ErrorMiddleware())
 try drop.middleware.append(BugsnagMiddleware(drop: drop))
 
 //try drop.middleware.append(MetaMiddleware(drop: drop))
@@ -70,7 +70,7 @@ drop.get { req in
 
 
 drop.get("test") { req in
-    throw Error.report(status: .badRequest, message: "test", code: 2)
+    throw Abort.customWithCode(status: .badRequest, message: "test", code: 2)
 }
 
 

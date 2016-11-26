@@ -3,14 +3,15 @@ import PackageDescription
 let package = Package(
     name: "sandbox",
     targets: [
+        /*Target(name: "Error"),
+        Target(name: "App", dependencies: [
+            .Target(name: "Error")
+            ]),*/
         Target(name: "Bugsnag"),
         Target(name: "App", dependencies: [
             .Target(name: "Bugsnag")
-            ]),
-        Target(name: "Error"),
-        Target(name: "App", dependencies: [
-            .Target(name: "Error")
             ])
+        
     ],
     dependencies: [
         .Package(url: "https://github.com/vapor/vapor.git", majorVersion: 1, minor: 1),

@@ -1,6 +1,6 @@
 import Vapor
 import HTTP
-import Error
+//import Error
 
 public final class BugsnagMiddleware: Middleware {
     
@@ -18,24 +18,29 @@ public final class BugsnagMiddleware: Middleware {
         do {
             return try next.respond(to: request)
         } catch Abort.badRequest {
-            BugsnagMiddleware.report(message: "Bad request", request: request)
+            try report(status: .badRequest, message: "Bad request", request: request)
             throw Abort.badRequest
         } catch Abort.serverError {
+            try report(status: .internalServerError, message: "Server error", request: request)
             throw Abort.serverError
-            BugsnagMiddleware.report(message: "Server error", request: request)
         } catch Abort.notFound {
+            try report(status: .notFound, message: "Not found", request: request)
             throw Abort.notFound
         } catch Abort.custom(let status, let message) {
+            try report(status: status, message: message, request: request)
             throw Abort.custom(status: status, message: message)
         } catch Abort.customWithCode(let status, let message, let code) {
+            try report(status: status, message: message, request: request)
             throw Abort.customWithCode(status: status, message: message, code: code)
-        } catch Error.standard(status: status, message: message, code: code) {
-            throw Error.standard(status: status, message: message, code: code)
         }
+        /*
+        catch Error.standard(status: status, message: message, code: code) {
+            throw Error.standard(status: status, message: message, code: code)
+        }*/
     }
     
-    public static func report(status: Status, message: String, request: Request) {
-        try connectionManager.post(message: error.localizedDescription, request: request)
+    public func report(status: Status, message: String, request: Request) throws {
+        try connectionManager.post(status: status, message: message, request: request)
     }
 }
 
