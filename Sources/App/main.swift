@@ -10,11 +10,12 @@ import Error
 
 let drop = Droplet()
 
-try drop.middleware.append(ErrorMiddleware())
-try drop.middleware.append(MetaMiddleware(drop: drop))
 try drop.middleware.append(BugsnagMiddleware(drop: drop))
-try drop.addProvider(NStackProvider(drop: drop))
-try drop.addProvider(VaporRedis.Provider(config: drop.config))
+try drop.middleware.append(ErrorMiddleware())
+//try drop.middleware.append(MetaMiddleware(drop: drop))
+
+//try drop.addProvider(NStackProvider(drop: drop))
+//try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 /*
 try drop.cache.set("test", Node("test"))

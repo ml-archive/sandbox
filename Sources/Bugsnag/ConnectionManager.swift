@@ -22,9 +22,9 @@ public final class ConnectionMananger {
     
     func body(error: Error, request: Request) throws -> JSON {
         
-    
+        let stacktraceList: [Node]
         
-        let stacktrace: Node = Node([
+        for s in Thread.callStackSymbols {
             Node([
                 "file": "N/A",
                 "lineNumber": 1,
@@ -32,9 +32,11 @@ public final class ConnectionMananger {
                 "method": "N/A",
                 "code": Node([
                     "1": "N/A"
-                ])
             ])
-        ])
+        }
+        
+        let stacktrace = Node(stacktraceList)
+    
         
         let app: Node = Node([
             "releaseStage": Node(drop.environment.description),
@@ -65,7 +67,6 @@ public final class ConnectionMananger {
             "events": event
         ])
     }
-    
     
     func post(json: JSON) throws -> Status {
         let response = try drop.client.post(self.config.endpoint, headers: headers(), body: json.makeBody())
