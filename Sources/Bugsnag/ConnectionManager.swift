@@ -72,7 +72,7 @@ public final class ConnectionMananger {
         return response.status
     }
     
-    func post(message: String, request: Request) throws -> Status {
+    func post(status: Status, message: String, request: Request) throws -> Status {
         return try post(json: body(message: message, request: request))
     }
     
