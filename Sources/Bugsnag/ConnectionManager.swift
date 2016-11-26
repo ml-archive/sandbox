@@ -27,12 +27,12 @@ public final class ConnectionMananger {
         for entry in Thread.callStackSymbols {
             stacktraceList.append(Node([
                 "file": Node(entry),
-                "lineNumber": 1,
-                "columnNumber": 1,
+                "lineNumber": 0,
+                "columnNumber": 0,
                 "method": Node(entry),
                 "code": Node([
                     "1": Node(entry)
-                    ])
+                ])
             ]))
         }
         
@@ -41,6 +41,16 @@ public final class ConnectionMananger {
         let app: Node = Node([
             "releaseStage": Node(drop.environment.description),
             "type": "Vapor"
+        ])
+        
+        var headers: [String: Polymorphic] = [:]
+        for (key, value) in request.headers {
+            headers[key.key] = value
+        }
+    
+        
+        let metaData = Node([
+    //        "headers": h
         ])
         
         let event: Node = Node([
@@ -53,7 +63,8 @@ public final class ConnectionMananger {
                         "stacktrace": stacktrace
                     ])
                 ]),
-                "app": app
+                "app": app,
+                "severity": "error",
             ])
         ])
     
@@ -64,7 +75,8 @@ public final class ConnectionMananger {
                     "version": "1.0.11",
                     "url": "https://github.com/nodes-vapor/bugsnag"
             ]),
-            "events": event
+            "events": event,
+            "metaData": metaData
         ])
     }
     
