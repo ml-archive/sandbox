@@ -10,8 +10,9 @@ import Error
 
 let drop = Droplet()
 
+drop.middleware.append(ErrorMiddleware())
 try drop.middleware.append(BugsnagMiddleware(drop: drop))
-try drop.middleware.append(ErrorMiddleware())
+
 //try drop.middleware.append(MetaMiddleware(drop: drop))
 
 //try drop.addProvider(NStackProvider(drop: drop))

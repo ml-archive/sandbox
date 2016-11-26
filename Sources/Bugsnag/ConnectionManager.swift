@@ -20,24 +20,22 @@ public final class ConnectionMananger {
         return headers
     }
     
-    func body(error: Error, request: Request) throws -> JSON {
-        
+    func body(message: String, request: Request) throws -> JSON {
         let stacktraceList: [Node]
         
-        for s in Thread.callStackSymbols {
+        for entry in Thread.callStackSymbols {
             Node([
-                "file": "N/A",
+                "file": Node(entry),
                 "lineNumber": 1,
                 "columnNumber": 1,
-                "method": "N/A",
+                "method": Node(entry),
                 "code": Node([
-                    "1": "N/A"
+                    "1": Node(entry)
             ])
         }
         
         let stacktrace = Node(stacktraceList)
-    
-        
+   
         let app: Node = Node([
             "releaseStage": Node(drop.environment.description),
             "type": "Vapor"
@@ -48,8 +46,8 @@ public final class ConnectionMananger {
                 "payloadVersion": 2,
                 "exceptions": Node([
                     Node([
-                        "errorClass": Node(error.localizedDescription),
-                        "message": Node(error.localizedDescription),
+                        "errorClass": Node(message),
+                        "message": Node(message),
                         "stacktrace": stacktrace
                     ])
                 ]),
@@ -74,8 +72,8 @@ public final class ConnectionMananger {
         return response.status
     }
     
-    func post(error: Error, request: Request) throws -> Status {
-        return try post(json: body(error: error, request: request))
+    func post(message: String, request: Request) throws -> Status {
+        return try post(json: body(message: message, request: request))
     }
     
 }

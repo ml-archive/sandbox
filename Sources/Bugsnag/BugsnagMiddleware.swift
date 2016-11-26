@@ -17,7 +17,7 @@ public final class BugsnagMiddleware: Middleware {
         do {
             return try next.respond(to: request)
         } catch {
-            try connectionManager.post(error: error, request: request)
+            try connectionManager.post(message: error.localizedDescription, request: request)
             throw error
         }
     }
