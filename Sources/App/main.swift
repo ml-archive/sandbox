@@ -9,6 +9,7 @@ import Bugsnag
 
 let drop = Droplet()
 
+try drop.middleware.append(NAbortMiddleware())
 try drop.middleware.append(MetaMiddleware(drop: drop))
 try drop.middleware.append(BugsnagMiddleware(drop: drop))
 try drop.addProvider(NStackProvider(drop: drop))
@@ -66,7 +67,7 @@ drop.get { req in
 
 
 drop.get("test") { req in
-    throw Abort.badRequest
+    throw NAbort(status: .badRequest, message: "test", code: 2)
     return JSON([
         "test": "test"
     ])
