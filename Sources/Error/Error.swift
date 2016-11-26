@@ -1,13 +1,7 @@
 import HTTP
 
-public class Error: Swift.Error {
-    var status: Status
-    var message: String
-    var code: Int
-    
-    public init(status: Status, message: String, code: Int) {
-        self.status = status
-        self.message = message
-        self.code = code
-    }
+public enum Error: Swift.Error {
+    case standard(status: Status, message: String, code: Int)
+    case report(status: Status, message: String, code: Int)
+    case reportWithMeta(status: Status, message: String, code: Int, meta: [String: String])
 }

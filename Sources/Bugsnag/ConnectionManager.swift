@@ -70,10 +70,6 @@ public final class ConnectionMananger {
     func post(json: JSON) throws -> Status {
         let response = try drop.client.post(self.config.endpoint, headers: headers(), body: json.makeBody())
         
-        print(response.json)
-        print(response.status)
-        print(response.data)
-        
         return response.status
     }
     

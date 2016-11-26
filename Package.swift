@@ -6,6 +6,10 @@ let package = Package(
         Target(name: "Bugsnag"),
         Target(name: "App", dependencies: [
             .Target(name: "Bugsnag")
+            ]),
+        Target(name: "Error"),
+        Target(name: "App", dependencies: [
+            .Target(name: "Error")
             ])
     ],
     dependencies: [

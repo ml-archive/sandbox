@@ -1,27 +1,20 @@
 import HTTP
 import Vapor
 
-public class NAbortMiddleware: Middleware {
-    public init() { }
-    
-    /**
-     Respond to a given request chaining to the next
-     
-     - parameter request: request to process
-     - parameter chain: next responder to pass request to
-     
-     - throws: an error on failure
-     
-     - returns: a valid response
-     */
+public class ErrorMiddleware: Middleware {
+    public init(){}
     public func respond(to request: Request, chainingTo chain: Responder) throws -> Response {
         do {
             return try chain.respond(to: request)
-        } catch is NAbort {
-            return try NAbortMiddleware.errorResponse(request, .badRequest, "Invalid request")
+        } catch Error.standard(let status, let message, let code) {
+            return try ErrorMiddleware.errorResponse(request, status, message, code)
+        } catch Error.report(let status, let message, let code) {
+            return try ErrorMiddleware.errorResponse(request, status, message, code)
+        } catch Error.reportWithMeta(let status, let message, let code, _) {
+            return try ErrorMiddleware.errorResponse(request, status, message, code)
         }
     }
-    
+        
     static func errorResponse(_ request: Request, _ status: Status, _ message: String, _ code: Int = 0) throws -> Response {
         if request.accept.prefers("html") {
             return ErrorView.shared.makeResponse(status, message)

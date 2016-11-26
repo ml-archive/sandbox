@@ -6,10 +6,11 @@ import SwiftyBeaver
 import Foundation
 import VaporRedis
 import Bugsnag
+import Error
 
 let drop = Droplet()
 
-try drop.middleware.append(NAbortMiddleware())
+try drop.middleware.append(ErrorMiddleware())
 try drop.middleware.append(MetaMiddleware(drop: drop))
 try drop.middleware.append(BugsnagMiddleware(drop: drop))
 try drop.addProvider(NStackProvider(drop: drop))
@@ -67,10 +68,7 @@ drop.get { req in
 
 
 drop.get("test") { req in
-    throw NAbort(status: .badRequest, message: "test", code: 2)
-    return JSON([
-        "test": "test"
-    ])
+    throw Error.report(status: .badRequest, message: "test", code: 2)
 }
 
 
