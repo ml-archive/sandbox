@@ -70,7 +70,7 @@ drop.get { req in
 
 
 drop.get("test") { req in
-    throw Abort.customWithCode(status: .badRequest, message: "test", code: 2)
+    throw Abort.custom(status: .badRequest, message: "test")
 }
 
 

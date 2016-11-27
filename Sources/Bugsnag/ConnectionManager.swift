@@ -22,21 +22,24 @@ public final class ConnectionMananger {
     }
     
     func body(message: String, request: Request) throws -> JSON {
-        var stacktraceList: [Node] = []
+        var code: [String: Node] = [:]
         
+        var index = 0
         for entry in Thread.callStackSymbols {
-            stacktraceList.append(Node([
-                "file": Node(entry),
-                "lineNumber": 0,
-                "columnNumber": 0,
-                "method": Node(entry),
-                "code": Node([
-                    "1": Node(entry)
-                ])
-            ]))
+            code[String(index)] = Node(entry)
+            
+            index = index + 1
         }
         
-        let stacktrace = Node(stacktraceList)
+        let stacktrace = Node([
+            Node([
+                "file": Node(message),
+                "lineNumber": 0,
+                "columnNumber": 0,
+                "method": "NA",
+                "code": Node(code)
+            ])
+        ])
    
         let app: Node = Node([
             "releaseStage": Node(drop.environment.description),
