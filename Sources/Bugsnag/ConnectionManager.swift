@@ -43,15 +43,20 @@ public final class ConnectionMananger {
             "type": "Vapor"
         ])
         
-        var headers: [String: Polymorphic] = [:]
+        var headers: [String: Node] = [:]
         for (key, value) in request.headers {
-            headers[key.key] = value
+            headers[key.key] = Node(value)
         }
-    
         
         let metaData = Node([
-    //        "headers": h
+            "request": Node([
+                "method": Node(request.method.description),
+                "headers": Node(headers),
+                "params": request.parameters,
+                "url": Node(request.uri.path)
+            ])
         ])
+        
         
         let event: Node = Node([
             Node([
@@ -65,6 +70,7 @@ public final class ConnectionMananger {
                 ]),
                 "app": app,
                 "severity": "error",
+                "metaData": metaData
             ])
         ])
     
@@ -76,7 +82,6 @@ public final class ConnectionMananger {
                     "url": "https://github.com/nodes-vapor/bugsnag"
             ]),
             "events": event,
-            "metaData": metaData
         ])
     }
     
