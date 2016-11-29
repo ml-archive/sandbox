@@ -7,11 +7,28 @@ import Foundation
 import VaporRedis
 import Bugsnag
 //import Error
+import Admin
+
 
 let drop = Droplet()
 
+drop.view = LeafRenderer(
+    viewsDir: Droplet().workDir + "Sources/Admin/Resources/Views"
+)
+
+// Backend
+drop.grouped("/admin/dashboard").collection(Admin.DashboardRoutes(droplet: drop))
+drop.grouped("/admin/users").collection(Admin.BackendUsersRoutes(droplet: drop))
+drop.grouped("/admin/users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
+
+/*
+ view: LeafRenderer(
+ viewsDir: Droplet().workDir + "VaporBackend/Resources/Views"
+ ),
+ */
+
 //drop.middleware.append(ErrorMiddleware())
-try drop.middleware.append(BugsnagMiddleware(drop: drop))
+//try drop.middleware.append(BugsnagMiddleware(drop: drop))
 
 //try drop.middleware.append(MetaMiddleware(drop: drop))
 
