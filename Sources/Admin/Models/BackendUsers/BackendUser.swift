@@ -6,24 +6,6 @@ import Turnstile
 import TurnstileCrypto
 
 public final class BackendUser: Model {
-    /**
-     Turn the convertible into a node
-     
-     - throws: if convertible can not create a Node
-     - returns: a node if possible
-     */
-    public func makeNode(context: Context) throws -> Node {
-        return try Node(node: [
-            "id": id,
-            "name": name,
-            "email": email.value,
-            "password": password,
-            "role": role,
-            "created_at": createdAt,
-            "updated_at": updatedAt
-            ])
-    }
-
     
     public static var entity = "backend_users"
     
@@ -53,6 +35,18 @@ public final class BackendUser: Model {
         role = request.data["role"]?.string ?? "user"
         createdAt = request.data["created_at"]?.int ?? 0
         updatedAt = request.data["updated_at"]?.int ?? 0
+    }
+    
+    public func makeNode(context: Context) throws -> Node {
+        return try Node(node: [
+            "id": id,
+            "name": name,
+            "email": email.value,
+            "password": password,
+            "role": role,
+            "created_at": createdAt,
+            "updated_at": updatedAt
+        ])
     }
     
     public static func prepare(_ database: Database) throws {
