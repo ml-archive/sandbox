@@ -13,5 +13,5 @@
 }
 
 #export("content") {
-
+    <h5>Dashboard</h5>
 }

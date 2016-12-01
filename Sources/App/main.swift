@@ -17,6 +17,7 @@ drop.view = LeafRenderer(
 )
 
 // Backend
+drop.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
 drop.grouped("/admin/dashboard").collection(Admin.DashboardRoutes(droplet: drop))
 drop.grouped("/admin/users").collection(Admin.BackendUsersRoutes(droplet: drop))
 drop.grouped("/admin/users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
@@ -63,35 +64,6 @@ let log = drop.log.self
 //try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
 
 let translate = drop.nstack?.application.translate.self
-
-
-drop.post { req in
-    if req.accept.prefers("html") {
-        return try drop.view.make("welcome", [
-            "message": drop.localization[req.lang, "welcome", "title"]
-            ])
-    } else {
-        return JSON(["json"])
-    }
-}
-
-drop.get { req in
-    if req.accept.prefers("html") {
-        return try drop.view.make("welcome", [
-            "message": drop.localization[req.lang, "welcome", "title"]
-            ])
-    } else {
-        return JSON(["json"])
-    }
-}
-
-
-drop.get("test") { req in
-    throw Abort.custom(status: .badRequest, message: "test")
-}
-
-
-drop.resource("posts", PostController())
 
 if drop.config["app"] == nil {
     throw Abort.custom(status: .internalServerError, message: "Config was not loaded, might have an error")

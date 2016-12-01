@@ -1,0 +1,8 @@
+<h5>Welcome</h5>
+<form method="post" action="/admin/login">
+    <input type="text" name="email">
+    <br>
+    <input type="password" name="password">
+    <br>
+    <input type="submit" class="btn btn-primary form-control" value="Login">
+</form>
