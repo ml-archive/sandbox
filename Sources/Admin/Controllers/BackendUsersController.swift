@@ -72,9 +72,9 @@ public final class BackendUsersController {
         var backendUser = user;
         
         // User details
-        backendUser.name = request.data["name"]?.string
+        //backendUser.name = request.data["name"]?.string
         backendUser.email = try request.data["email"].validated()
-        backendUser.role = request.data["role"]?.string
+        //backendUser.role = request.data["role"]?.string
         
         // Change password
         if let password = request.data["password"]?.string, let passwordRepeat = request.data["passwordRepeat"]?.string, password == passwordRepeat {
