@@ -1,5 +1,6 @@
 import Console
 import Admin
+import TurnstileCrypto
 
 public final class Seeder: Command {
     public let id = "seeder"
@@ -52,7 +53,7 @@ public final class Seeder: Command {
             try Admin.BackendUser(node: [
                 "name": "Admin",
                 "email": "tech@nodes.dk",
-                "password": "admin",
+                "password": BCrypt.hash(password: "admin"),
                 "role": "super-admin",
                 ]),
             ]
