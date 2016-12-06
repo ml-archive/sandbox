@@ -9,6 +9,7 @@ import Bugsnag
 //import Error
 import Admin
 import VaporMySQL
+import Auth
 
 
 let drop = Droplet()
@@ -29,6 +30,9 @@ drop.preparations = [
     Admin.BackendUserRole.self,
     Admin.BackendUser.self,
 ]
+
+
+drop.middleware.append(AuthMiddleware<BackendUser>())
 
 /*
  view: LeafRenderer(

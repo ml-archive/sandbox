@@ -5,8 +5,9 @@ import HTTP
 import Turnstile
 import TurnstileCrypto
 import SwiftDate
+import Auth
 
-public final class BackendUser: Model {
+public final class BackendUser: Auth.User {
     
     public var exists: Bool = false
     public static var entity = "backend_users"
@@ -44,6 +45,23 @@ public final class BackendUser: Model {
         } catch {
             updatedAt = DateInRegion()
         }
+    }
+    
+    public init(credentials: UsernamePassword) throws {
+        self.name = ""
+        self.email = try credentials.username.validated()
+        self.password = BCrypt.hash(password: credentials.password)
+        self.role = ""
+        self.updatedAt = DateInRegion()
+        self.createdAt = DateInRegion()
+    }
+    
+    public static func authenticate(credentials: Credentials) throws -> Auth.User {
+        throw Abort.badRequest
+    }
+    
+    public static func register(credentials: Credentials) throws -> Auth.User {
+        throw Abort.badRequest
     }
     
     /*
@@ -86,4 +104,77 @@ public final class BackendUser: Model {
     public static func revert(_ database: Database) throws {
         try database.delete("backend_users")
     }
+}
+
+// MARK: Authentication
+extension User {
+    
+    
+    /*
+    @discardableResult
+    public static func authenticate(credentials: Credentials) throws -> Auth.User {
+        var user: User?
+        
+        switch credentials {
+        case let credentials as UsernamePassword:
+            let fetchedUser = try BackendUser.query().filter("email", credentials.username).first()
+            if let password = fetchedUser?.password, password != "", (try? BCrypt.verify(password: credentials.password, matchesHash: password)) == true {
+                user = fetchedUser
+            }
+            
+        case let credentials as Identifier: user = try BackendUser.find(credentials.id)
+            
+        case let credentials as Auth.AccessToken:
+            user = try BackendUser.query().filter("token", credentials.string).first()
+            
+        default:
+            throw UnsupportedCredentialsError()
+        }
+        
+        if var user = user {
+            /*
+            // Check if we have an accessToken first, if not, lets create a new one
+            if let accessToken = user.token {
+                // Check if our authentication token has expired, if so, lets generate a new one as this is a fresh login
+                let receivedJWT = try JWT(token: accessToken)
+                
+                // Validate it's time stamp
+                if !receivedJWT.verifyClaims([ExpirationTimeClaim()]) {
+                    try user.generateToken()
+                }
+            } else {
+                // We don't have a valid access token
+                try user.generateToken()
+            }
+             */
+            
+            try user.save()
+            
+            return user
+        } else {
+            throw IncorrectCredentialsError()
+        }
+    }
+    
+    @discardableResult
+    public static func register(credentials: Credentials) throws -> Auth.User {
+        var newUser: BackendUser
+        
+        switch credentials {
+        case let credentials as UsernamePassword:
+            newUser = try BackendUser(credentials: credentials)
+            
+        default: throw UnsupportedCredentialsError()
+        }
+        
+        if try BackendUser.query().filter("email", newUser.email.value).first() == nil {
+            try newUser.save()
+            return newUser
+        } else {
+            throw AccountTakenError()
+        }
+        
+    }
+    
+    */
 }
