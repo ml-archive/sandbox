@@ -42,8 +42,8 @@ public final class BackendUsersController {
      * - return: View
      */
     public func store(request: Request) throws -> ResponseRepresentable {
-        var backendUser = try BackendUser(request: request)
-        try backendUser.save()
+        //var backendUser = try BackendUser(request: request)
+        //try backendUser.save()
         
         return Response(redirect: "/admin/users?created=true")
     }

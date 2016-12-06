@@ -5,7 +5,7 @@ public final class Seeder: Command {
     public let id = "seeder"
     
     public let help: [String] = [
-        "Seeds the database with rss"
+        "Seeds the database"
     ]
     
     public let console: ConsoleProtocol
@@ -18,16 +18,42 @@ public final class Seeder: Command {
         
         console.info("Started the seeder");
         
+        let backendUserRoles = [
+            try Admin.BackendUserRole(node: [
+                    "title": "Super admin",
+                    "slug": "super-admin",
+                    "is_default": false,
+                ]),
+            try Admin.BackendUserRole(node: [
+                "title": "Admin",
+                "slug": "admin",
+                "is_default": false,
+                ]),
+            try Admin.BackendUserRole(node: [
+                "title": "User",
+                "slug": "user",
+                "is_default": true,
+                ]),
+            ]
+        
+        backendUserRoles.forEach({
+            var backendUserRole = $0
+            console.info("Looping \(backendUserRole.title)")
+            do {
+                try backendUserRole.save()
+            } catch {
+                console.error("Failed to store \(backendUserRole.title)")
+                print(error)
+            }
+        })
+        
         
         let backendUsers = [
             try Admin.BackendUser(node: [
-                "race_id": 1,
-                "name": "Copenhagen",
-                "url": "http://kmdironmancopenhagen.com/feed/",
-                "is_for_live_ticker": false,
-                "is_active": true,
-                "created_at": "2013-10-19 22:30:58",
-                "updated_at": "2016-07-20 15:24:38"
+                "name": "Admin",
+                "email": "tech@nodes.dk",
+                "password": "admin",
+                "role": "super-admin",
                 ]),
             ]
         
@@ -41,7 +67,6 @@ public final class Seeder: Command {
                 print(error)
             }
         })
-        
         
         console.info("Finished the seeder");
     }

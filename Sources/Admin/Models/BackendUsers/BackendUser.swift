@@ -4,9 +4,11 @@ import Foundation
 import HTTP
 import Turnstile
 import TurnstileCrypto
+import SwiftDate
 
 public final class BackendUser: Model {
     
+    public var exists: Bool = false
     public static var entity = "backend_users"
     
     public var id: Node?
@@ -14,8 +16,8 @@ public final class BackendUser: Model {
     public var email: Valid<Email>
     public var password: String
     public var role: String
-    public var createdAt: Int
-    public var updatedAt: Int
+    public var createdAt: DateInRegion
+    public var updatedAt: DateInRegion
     
     enum Error: Swift.Error {
         case userNotFound
@@ -30,10 +32,21 @@ public final class BackendUser: Model {
         email = try emailTemp.validated()
         password = try node.extract("password")
         role = try node.extract("role")
-        createdAt = try node.extract("created_at")
-        updatedAt = try node.extract("updated_at")
+        
+        do {
+            createdAt = try DateInRegion(string: node.extract("created_at"), format: .custom("yyyy-MM-dd HH:mm:ss"))
+        } catch {
+            createdAt = DateInRegion()
+        }
+        
+        do {
+            updatedAt = try DateInRegion(string: node.extract("updated_at"), format: .custom("yyyy-MM-dd HH:mm:ss"))
+        } catch {
+            updatedAt = DateInRegion()
+        }
     }
     
+    /*
     public init(request: Request) throws {
         name = request.data["name"]?.string ?? ""
         email = try request.data["email"].validated()
@@ -42,6 +55,7 @@ public final class BackendUser: Model {
         createdAt = request.data["created_at"]?.int ?? 0
         updatedAt = request.data["updated_at"]?.int ?? 0
     }
+    */
     
     public func makeNode(context: Context) throws -> Node {
         return try Node(node: [
@@ -50,8 +64,8 @@ public final class BackendUser: Model {
             "email": email.value,
             "password": password,
             "role": role,
-            "created_at": createdAt,
-            "updated_at": updatedAt
+            "created_at": createdAt.string(custom: "yyyy-MM-dd HH:mm:ss"),
+            "updated_at": updatedAt.string(custom: "yyyy-MM-dd HH:mm:ss")
         ])
     }
     
@@ -59,7 +73,7 @@ public final class BackendUser: Model {
         try database.create("backend_users") { table in
             table.id()
             table.string("name")
-            table.string("email")
+            table.string("email", unique: true)
             table.string("password")
             table.string("role")
             table.custom("created_at", type: "DATETIME", optional: true)

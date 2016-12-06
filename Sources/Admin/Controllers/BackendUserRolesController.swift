@@ -26,9 +26,10 @@ public final class BackendUserRolesController {
     }
 
     public func store(request: Request) throws -> ResponseRepresentable {
+        /*
         var role = try BackendUserRole(request: request)
         try role.save()
-        
+        */
         return Response(redirect: "/admin/users/roles?created=true");
     }
     

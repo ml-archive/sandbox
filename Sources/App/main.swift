@@ -77,6 +77,11 @@ if drop.config["app"] == nil {
     throw Abort.custom(status: .internalServerError, message: "Config was not loaded, might have an error")
 }
 
+drop.get("seeder") { request in
+    try Seeder(console: drop.console).run(arguments: [])
+    return "seeded"
+}
 drop.run()
+
 
 
