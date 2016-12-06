@@ -8,6 +8,7 @@ import VaporRedis
 import Bugsnag
 //import Error
 import Admin
+import VaporMySQL
 
 
 let drop = Droplet()
@@ -16,11 +17,18 @@ drop.view = LeafRenderer(
     viewsDir: Droplet().workDir + "Sources/Admin/Resources/Views"
 )
 
+try drop.addProvider(VaporMySQL.Provider.self)
+
 // Backend
 drop.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
 drop.grouped("/admin/dashboard").collection(Admin.DashboardRoutes(droplet: drop))
 drop.grouped("/admin/users").collection(Admin.BackendUsersRoutes(droplet: drop))
 drop.grouped("/admin/users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
+
+drop.preparations = [
+    Admin.BackendUserRole.self,
+    Admin.BackendUser.self,
+]
 
 /*
  view: LeafRenderer(

@@ -1,4 +1,6 @@
 {
-    "url": "$JAWSDB_URL",
-    "encoding": "utf8"
+    "host": "localhost",
+    "user": "root",
+    "password": "secret",
+    "database": "sandbox"
 }

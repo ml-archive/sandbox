@@ -17,6 +17,12 @@ public final class BackendUser: Model {
     public var createdAt: Int
     public var updatedAt: Int
     
+    enum Error: Swift.Error {
+        case userNotFound
+        case registerNotSupported
+        case unsupportedCredentials
+    }
+    
     public init(node: Node, in context: Context) throws {
         id = try node.extract("id")
         name = try node.extract("name")
@@ -52,13 +58,15 @@ public final class BackendUser: Model {
     public static func prepare(_ database: Database) throws {
         try database.create("backend_users") { table in
             table.id()
-            table.string("name");
-            table.string("email");
-            table.string("password");
-            table.string("role");
-            table.string("created_at", optional: true)
-            table.string("updated_at", optional: true)
+            table.string("name")
+            table.string("email")
+            table.string("password")
+            table.string("role")
+            table.custom("created_at", type: "DATETIME", optional: true)
+            table.custom("updated_at", type: "DATETIME", optional: true)
         }
+        
+        //try database.driver.raw("ADD FOREIGN TODO")
     }
     
     public static func revert(_ database: Database) throws {
