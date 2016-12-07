@@ -1,5 +1,5 @@
 <h5>Welcome</h5>
-<h5>#(error)</h5>
+<h5>#(flash.error)</h5>
 
 <form method="post" action="/admin/login">
     <input type="text" name="email">
