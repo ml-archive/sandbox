@@ -19,5 +19,6 @@ public struct LoginRoutes: RouteCollection {
         builder.get("/", handler: controller.form);
         builder.get("/admin", handler: controller.form);
         builder.post("/admin/login", handler: controller.submit);
+        builder.get("/admin/logout", handler: controller.logout);
     }
 }

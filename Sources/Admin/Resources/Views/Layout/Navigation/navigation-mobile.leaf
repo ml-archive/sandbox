@@ -15,7 +15,7 @@
                 <i class="fa fa-pencil"></i>
                 Edit Profile
             </a>
-            <a href="/logout" class="list-group-item">
+            <a href="/admin/logout" class="list-group-item">
                 <i class="fa fa-sign-out"></i>
                 Sign out
             </a>

@@ -14,6 +14,12 @@ public final class LoginController {
         drop = droplet
     }
     
+    public func logout(request: Request) throws -> ResponseRepresentable {
+        try request.auth.logout()
+        try FlashHelper.addError(request, message: "User is logged out")
+        return Response(redirect: "/admin");
+    }
+    
     public func form(request: Request) throws -> ResponseRepresentable {
         return try drop.view.make("Login/form", [
             "flash": try FlashHelper.retrieve(request)
