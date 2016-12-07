@@ -11,11 +11,11 @@
     </button>
     <div id="userCollapse" class="collapse">
         <div class="list-group list-group-inverse">
-            <a href="https://sg-armaturen.like.st/admin/backend-users/profile" class="list-group-item">
+            <a href="/users/edit/1" class="list-group-item">
                 <i class="fa fa-pencil"></i>
                 Edit Profile
             </a>
-            <a href="/admin" class="list-group-item">
+            <a href="/logout" class="list-group-item">
                 <i class="fa fa-sign-out"></i>
                 Sign out
             </a>

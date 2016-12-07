@@ -7,7 +7,7 @@ import TurnstileCrypto
 import SwiftDate
 import Auth
 
-public final class BackendUser: Auth.User {
+public final class BackendUser: Auth.User, Model {
     
     public var exists: Bool = false
     public static var entity = "backend_users"
@@ -56,14 +56,6 @@ public final class BackendUser: Auth.User {
         self.createdAt = DateInRegion()
     }
     
-    public static func authenticate(credentials: Credentials) throws -> Auth.User {
-        throw Abort.badRequest
-    }
-    
-    public static func register(credentials: Credentials) throws -> Auth.User {
-        throw Abort.badRequest
-    }
-    
     /*
     public init(request: Request) throws {
         name = request.data["name"]?.string ?? ""
@@ -107,11 +99,9 @@ public final class BackendUser: Auth.User {
 }
 
 // MARK: Authentication
-extension User {
-    
-    
-    /*
+extension BackendUser {
     @discardableResult
+    
     public static func authenticate(credentials: Credentials) throws -> Auth.User {
         var user: User?
         
@@ -131,29 +121,11 @@ extension User {
             throw UnsupportedCredentialsError()
         }
         
-        if var user = user {
-            /*
-            // Check if we have an accessToken first, if not, lets create a new one
-            if let accessToken = user.token {
-                // Check if our authentication token has expired, if so, lets generate a new one as this is a fresh login
-                let receivedJWT = try JWT(token: accessToken)
-                
-                // Validate it's time stamp
-                if !receivedJWT.verifyClaims([ExpirationTimeClaim()]) {
-                    try user.generateToken()
-                }
-            } else {
-                // We don't have a valid access token
-                try user.generateToken()
-            }
-             */
-            
-            try user.save()
-            
-            return user
-        } else {
+        guard let unwrappedUser: Auth.User = user else {
             throw IncorrectCredentialsError()
         }
+        
+        return unwrappedUser
     }
     
     @discardableResult
@@ -175,6 +147,4 @@ extension User {
         }
         
     }
-    
-    */
 }

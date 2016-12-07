@@ -10,7 +10,7 @@ import Bugsnag
 import Admin
 import VaporMySQL
 import Auth
-
+import Sessions
 
 let drop = Droplet()
 
@@ -19,6 +19,7 @@ drop.view = LeafRenderer(
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
+try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 // Backend
 drop.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
@@ -33,6 +34,10 @@ drop.preparations = [
 
 
 drop.middleware.append(AuthMiddleware<BackendUser>())
+let memory = MemorySessions()
+let sessions = SessionsMiddleware(sessions: memory)
+
+//drop.middleware.append
 
 /*
  view: LeafRenderer(

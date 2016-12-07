@@ -15,7 +15,9 @@ public final class LoginController {
     }
     
     public func form(request: Request) throws -> ResponseRepresentable {
-        return try drop.view.make("Login/form")
+        return try drop.view.make("Login/form", [
+            "error": FlashHelper.retrieveError(request) ?? ""
+        ])
     }
     
     public func submit(request: Request) throws -> ResponseRepresentable {
@@ -29,10 +31,9 @@ public final class LoginController {
             try request.auth.login(credentials)
             return Response(redirect: "/admin/dashboard");
         } catch _ {
-            throw Abort.custom(status: Status.badRequest, message: "Invalid email or password")
+            try FlashHelper.applyError(request, message: "Failed to login")
+            return Response(redirect: "/admin");
         }
-        
-
         
     }
 }
