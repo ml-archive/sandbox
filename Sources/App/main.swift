@@ -22,13 +22,18 @@ try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 // Backend
-let protect = Admin.AuthRedirectMiddleware()
+//drop.middleware.append(Admin.AuthRedirectMiddleware())
+
+let redirectToAdmin = Admin.AuthRedirectMiddleware()
+let protect = ProtectMiddleware(error: Abort.custom(status: .unauthorized, message: "Unauthorized"))
+
 drop.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
-drop.grouped("/admin/dashboard").collection(Admin.DashboardRoutes(droplet: drop))
-drop.grouped("/admin/users").collection(Admin.BackendUsersRoutes(droplet: drop))
-drop.grouped("/admin/users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
 
-
+drop.group(redirectToAdmin, protect) { secured in
+    secured.grouped("/admin/dashboard").collection(Admin.DashboardRoutes(droplet: drop))
+    secured.grouped("/admin/users").collection(Admin.BackendUsersRoutes(droplet: drop))
+    secured.grouped("/admin/users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
+}
 
 drop.preparations = [
     Admin.BackendUserRole.self,
