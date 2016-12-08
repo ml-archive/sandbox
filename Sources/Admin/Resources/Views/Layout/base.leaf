@@ -52,7 +52,7 @@
                     <div class="page-header__breadcrumbs">
                         <ol class="breadcrumb">
                             <li>
-                                <a href="/admin">Dashboard</a>
+                                <a href="/admin/dashboard">Dashboard</a>
                             </li>
                             #import("breadcrumbs")
                         </ol>

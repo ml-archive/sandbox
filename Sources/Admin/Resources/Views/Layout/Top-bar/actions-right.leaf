@@ -3,7 +3,7 @@
         <button class="btn btn-transparent dropdown-toggle user__info-button" data-toggle="dropdown">
             <img class="user__info-avatar img-responsive img-circle" src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg">
                 <span class="user__info-name" title="John Doe">
-                    Morten Rugaard
+                    John Doe
                     <span class="caret"></span>
                 </span>
                 </button>
@@ -16,19 +16,19 @@
                             </div>
                     <div class="user__info">
                         <span class="user__info-name" title="John Doe">
-                            Morten Rugaard
+                            John Doe
                         </span>
-                        <span class="user__info-email" title="moru@nodes.dk">
-                            moru@nodes.dk
+                        <span class="user__info-email" title="tech@nodes.dk">
+                            cr@nodes.dk
                         </span>
                     </div>
                 </div>
                 <div class="user-actions">
-                    <a href="https://sg-armaturen.like.st/admin/login/logout" class="btn btn-sm btn-transparent user__sign-out">
+                    <a href="/admin/logout" class="btn btn-sm btn-transparent user__sign-out">
                         <i class="fa fa-sign-out"></i>
                         Sign out
                     </a>
-                    <a href="https://sg-armaturen.like.st/admin/backend-users/profile" class="btn btn-sm btn-transparent user__settings" data-toggle="tooltip" data-placement="left" title="" data-original-title="Edit user">
+                    <a href="/admin/users/edit/1" class="btn btn-sm btn-transparent user__settings" data-toggle="tooltip" data-placement="left" title="" data-original-title="Edit user">
                         <i class="fa fa-pencil"></i>
                     </a>
                 </div>

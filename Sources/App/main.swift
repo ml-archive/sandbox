@@ -22,10 +22,13 @@ try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 // Backend
+let protect = Admin.AuthRedirectMiddleware()
 drop.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
 drop.grouped("/admin/dashboard").collection(Admin.DashboardRoutes(droplet: drop))
 drop.grouped("/admin/users").collection(Admin.BackendUsersRoutes(droplet: drop))
 drop.grouped("/admin/users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
+
+
 
 drop.preparations = [
     Admin.BackendUserRole.self,
@@ -34,6 +37,7 @@ drop.preparations = [
 
 
 drop.middleware.append(AuthMiddleware<BackendUser>())
+
 let memory = MemorySessions()
 let sessions = SessionsMiddleware(sessions: memory)
 
