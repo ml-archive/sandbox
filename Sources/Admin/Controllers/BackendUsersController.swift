@@ -19,7 +19,6 @@ public final class BackendUsersController {
         let users = try BackendUser.all()
         let userNodes = try users.map({ try $0.makeNode() })
         
-        
         return try drop.view.make("BackendUsers/index", [
             "users": Node(userNodes)
         ])
