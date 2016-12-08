@@ -25,7 +25,7 @@ try drop.addProvider(VaporRedis.Provider(config: drop.config))
 //drop.middleware.append(Admin.AuthRedirectMiddleware())
 
 let redirectToAdmin = Admin.AuthRedirectMiddleware()
-let protect = ProtectMiddleware(error: Abort.custom(status: .unauthorized, message: "Unauthorized"))
+let protect = ProtectMiddleware(error: AuthError.notAuthenticated)
 
 drop.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
 

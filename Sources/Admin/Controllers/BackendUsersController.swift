@@ -16,7 +16,7 @@ public final class BackendUsersController {
      * - return: View
      */
     public func index(request: Request) throws -> ResponseRepresentable {
-        let users = try BackendUser.all()
+        let users = try BackendUser.all() // todo pagination && search
         let userNodes = try users.map({ try $0.makeNode() })
         
         return try drop.view.make("BackendUsers/index", [
