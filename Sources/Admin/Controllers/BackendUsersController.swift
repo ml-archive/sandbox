@@ -9,6 +9,12 @@ public final class BackendUsersController {
         drop = droplet
     }
     
+    public func logout(request: Request) throws -> ResponseRepresentable {
+        try request.auth.logout()
+        try FlashHelper.addError(request, message: "User is logged out") // TODO
+        return Response(redirect: "/admin");
+    }
+    
     /**
      * List all backend users
      *

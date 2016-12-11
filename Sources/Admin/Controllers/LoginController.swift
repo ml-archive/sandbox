@@ -14,14 +14,42 @@ public final class LoginController {
         drop = droplet
     }
     
-    public func logout(request: Request) throws -> ResponseRepresentable {
-        try request.auth.logout()
-        try FlashHelper.addError(request, message: "User is logged out")
-        return Response(redirect: "/admin");
+    public func landing(request: Request) throws -> ResponseRepresentable {
+        do {
+            _ = try request.auth.user()
+            return Response(redirect: "/admin/dashboard");
+        } catch {
+            return Response(redirect: "/admin/login");
+        }
+    }
+    
+    public func resetPasswordForm(request: Request) throws -> ResponseRepresentable {
+        return try drop.view.make("Login/reset", [
+            "flash": try FlashHelper.retrieve(request)
+        ])
+    }
+    
+    public func resetPasswordSubmit(request: Request) throws -> ResponseRepresentable {
+        guard let email = request.data["email"]?.string else {
+            throw Abort.custom(status: Status.badRequest, message: "Missing email")
+        }
+        
+        guard let user: BackendUser = try BackendUser.query().filter("email", email).first() else {
+            throw Abort.custom(status: Status.badRequest, message: "Email doesn ot exist")
+        }
+        
+        // Consider expiring old tokes for this user
+        
+        // Make a token
+        var token = try BackendUserResetPasswordTokens(email: user.email.value)
+        try token.save()
+        
+        try FlashHelper.addSuccess(request, message: "Email sent")
+        return Response(redirect: "/admin/login");
     }
     
     public func form(request: Request) throws -> ResponseRepresentable {
-        return try drop.view.make("Login/form", [
+        return try drop.view.make("Login/login", [
             "flash": try FlashHelper.retrieve(request)
         ])
     }

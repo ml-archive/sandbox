@@ -28,15 +28,13 @@
             <form method="post" action="/admin/login">
                 <div class="form-group action-wrapper">
                     <label for="email">E-mail</label>
-                    <input type="email" id="email" class="form-control" name="email" >
-                        </div>
+                    <input type="email" id="email" class="form-control" name="email" required placeholder="Insert email">
+                </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" class="form-control" name="password">
-                    <span class="action-wrap-action action-wrap-right">
-                        <i class="fa fa-lock fa-lg" aria-hidden="true"></i>
-                    </span>
+                    <input type="password" id="password" class="form-control" name="password" required placeholder="Insert password">
                 </div>
+                
                 
                 <div class="form-group clearfix">
                     <div class="checkbox pull-left">
@@ -46,7 +44,7 @@
                                 </label>
                     </div>
                     <div class="pull-right">
-                        <a href="/admin">Forgot password?</a>
+                        <a href="/admin/login/reset">Forgot password?</a>
                     </div>
                 </div>
                 <div class="form-group">

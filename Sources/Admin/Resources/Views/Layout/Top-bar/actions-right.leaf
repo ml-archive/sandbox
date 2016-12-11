@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="user-actions">
-                    <a href="/admin/logout" class="btn btn-sm btn-transparent user__sign-out">
+                    <a href="/admin/backend_users/logout" class="btn btn-sm btn-transparent user__sign-out">
                         <i class="fa fa-sign-out"></i>
                         Sign out
                     </a>

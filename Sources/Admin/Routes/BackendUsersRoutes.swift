@@ -19,6 +19,7 @@ public struct BackendUsersRoutes: RouteCollection {
         builder.get("/", handler: controller.index)
         builder.get("/create", handler: controller.create)
         builder.post("/create", handler: controller.store)
+        builder.get("/logout", handler: controller.logout);
         
         builder.get("/edit", BackendUser.self, handler: controller.edit)
         builder.post("/edit", BackendUser.self, handler: controller.update)

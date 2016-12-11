@@ -11,13 +11,13 @@
         Admin
     </li>
     <li class="list-group-item">
-        <a href="/admin/users">
+        <a href="/admin/backend_users">
             <i class="fa fa-street-view"></i>
             Backend users
         </a>
     </li>
     <li class="list-group-item ">
-        <a href="/admin/users/roles">
+        <a href="/admin/backend_users/roles">
             <i class="fa fa-graduation-cap"></i>
             Roles
         </a>

@@ -16,9 +16,12 @@ public struct LoginRoutes: RouteCollection {
         
         let controller = LoginController(droplet: drop)
         
-        builder.get("/", handler: controller.form);
-        builder.get("/admin", handler: controller.form);
+        builder.get("/", handler: controller.landing);
+        builder.get("/admin", handler: controller.landing);
+        
+        builder.get("/admin/login/reset", handler: controller.resetPasswordForm);
+        builder.post("/admin/login/reset", handler: controller.resetPasswordSubmit);
+        builder.get("/admin/login", handler: controller.form);
         builder.post("/admin/login", handler: controller.submit);
-        builder.get("/admin/logout", handler: controller.logout);
     }
 }

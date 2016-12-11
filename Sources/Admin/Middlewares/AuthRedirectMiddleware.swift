@@ -10,7 +10,7 @@ public class AuthRedirectMiddleware: Middleware {
             return try next.respond(to: request)
         } catch AuthError.notAuthenticated {
             try FlashHelper.addError(request, message: "Session expired login again")
-            return Response(redirect: "/admin");
+            return Response(redirect: "/admin/login");
         }
     }
 }

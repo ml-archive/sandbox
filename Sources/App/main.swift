@@ -27,8 +27,8 @@ drop.group(AuthMiddleware<BackendUser>()) { auth in
     
     auth.group(Admin.AuthRedirectMiddleware(), ProtectMiddleware(error: AuthError.notAuthenticated)) { secured in
         secured.grouped("/admin/dashboard").collection(Admin.DashboardRoutes(droplet: drop))
-        secured.grouped("/admin/users").collection(Admin.BackendUsersRoutes(droplet: drop))
-        secured.grouped("/admin/users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
+        secured.grouped("/admin/backend_users").collection(Admin.BackendUsersRoutes(droplet: drop))
+        secured.grouped("/admin/backend_users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
     }
 }
 
@@ -82,7 +82,7 @@ drop.group(AuthMiddleware<User>()) { auth in
 
 
 
-
+drop.preparations.append(Admin.BackendUserResetPasswordTokens.self)
 drop.preparations.append(Admin.BackendUserRole.self)
 drop.preparations.append(Admin.BackendUser.self)
 
