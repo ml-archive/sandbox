@@ -35,16 +35,15 @@ drop.group(redirectToAdmin, protect) { secured in
     secured.grouped("/admin/users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
 }
 
-drop.preparations = [
-    Admin.BackendUserRole.self,
-    Admin.BackendUser.self,
-]
+drop.preparations.append(Admin.BackendUserRole.self)
+drop.preparations.append(Admin.BackendUser.self)
 
 
 drop.middleware.append(AuthMiddleware<BackendUser>())
 
 let memory = MemorySessions()
 let sessions = SessionsMiddleware(sessions: memory)
+drop.middleware.append(sessions)
 
 //drop.middleware.append
 
