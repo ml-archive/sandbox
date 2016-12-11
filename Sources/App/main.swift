@@ -21,7 +21,7 @@ drop.view = LeafRenderer(
 try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
-// Backend
+// Admin panel
 drop.group(AuthMiddleware<BackendUser>()) { auth in
     auth.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
     
