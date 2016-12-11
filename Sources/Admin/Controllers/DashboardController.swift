@@ -1,5 +1,6 @@
 import Vapor
 import HTTP
+import Auth
 
 public final class DashboardController {
     

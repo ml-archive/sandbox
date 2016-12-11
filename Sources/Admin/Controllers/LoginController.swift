@@ -39,7 +39,7 @@ public final class LoginController {
             // Todo deal with remember me
             
             return Response(redirect: "/admin/dashboard");
-        } catch _ {
+        } catch {
             try FlashHelper.addError(request, message: "Failed to login")
             return Response(redirect: "/admin");
         }

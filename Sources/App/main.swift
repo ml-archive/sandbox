@@ -22,30 +22,72 @@ try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 // Backend
-//drop.middleware.append(Admin.AuthRedirectMiddleware())
-
-let redirectToAdmin = Admin.AuthRedirectMiddleware()
-let protect = ProtectMiddleware(error: AuthError.notAuthenticated)
-
-drop.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
-
-drop.group(redirectToAdmin, protect) { secured in
-    secured.grouped("/admin/dashboard").collection(Admin.DashboardRoutes(droplet: drop))
-    secured.grouped("/admin/users").collection(Admin.BackendUsersRoutes(droplet: drop))
-    secured.grouped("/admin/users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
+drop.group(AuthMiddleware<BackendUser>()) { auth in
+    auth.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
+    
+    auth.group(Admin.AuthRedirectMiddleware(), ProtectMiddleware(error: AuthError.notAuthenticated)) { secured in
+        secured.grouped("/admin/dashboard").collection(Admin.DashboardRoutes(droplet: drop))
+        secured.grouped("/admin/users").collection(Admin.BackendUsersRoutes(droplet: drop))
+        secured.grouped("/admin/users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
+    }
 }
+
+//API
+drop.group(AuthMiddleware<User>()) { auth in
+    auth.group("api") { api in
+        
+        let usersController = UsersController()
+        
+        /*
+         * Registration
+         * Create a new Username and Password to receive an authorization token and account
+         */
+        api.post("register", handler: usersController.register)
+        
+        /*
+         * Log In
+         * Pass the Username and Password to receive a new token
+         */
+        api.post("login", handler: usersController.login)
+        
+        
+        
+        /*
+         * Secured Endpoints
+         * Anything in here requires the Authorication header:
+         * Example: "Authorization: Bearer TOKEN"
+         */
+        api.group(BearerAuthMiddleware(), ProtectMiddleware(error: Abort.custom(status: .unauthorized, message: "Unauthorized"))) { secured in
+            
+            let users = secured.grouped("users")
+            /*
+             * Validation: I use this to check on the token periodically to see
+             * if I need a new token while the user is using the app.
+             */
+            users.post("validate", handler: usersController.validateAccessToken)
+            
+            /*
+             * Me
+             * Get the current users info
+             */
+            users.get("me", handler: usersController.me)
+            
+            /*
+             * Log out
+             */
+            users.post("logout", handler: usersController.logout)
+        }
+    }
+}
+
+
+
 
 drop.preparations.append(Admin.BackendUserRole.self)
 drop.preparations.append(Admin.BackendUser.self)
 
+drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
 
-drop.middleware.append(AuthMiddleware<BackendUser>())
-
-let memory = MemorySessions()
-let sessions = SessionsMiddleware(sessions: memory)
-drop.middleware.append(sessions)
-
-//drop.middleware.append
 
 /*
  view: LeafRenderer(
@@ -98,6 +140,8 @@ drop.get("seeder") { request in
     try Seeder(console: drop.console).run(arguments: [])
     return "seeded"
 }
+
+
 drop.run()
 
 
