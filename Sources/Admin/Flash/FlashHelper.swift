@@ -22,7 +22,7 @@ public final class FlashHelper {
         let newNode =  try request.session().data[flashKey, new] ?? Node([])
         
         try request.session().data[flashKey, old] = newNode
-        try request.session().data[flashKey, old] = Node([])
+        try request.session().data[flashKey, new] = Node([])
         
         return newNode
     }

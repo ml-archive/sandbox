@@ -35,6 +35,9 @@ public final class LoginController {
     
         do {
             try request.auth.login(credentials)
+            
+            // Todo deal with remember me
+            
             return Response(redirect: "/admin/dashboard");
         } catch _ {
             try FlashHelper.addError(request, message: "Failed to login")
