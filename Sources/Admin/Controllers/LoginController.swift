@@ -49,6 +49,7 @@ public final class LoginController {
     }
     
     public func form(request: Request) throws -> ResponseRepresentable {
+        request.storage["test"] = "test"
         return try drop.view.make("Login/login", [
             "flash": try FlashHelper.retrieve(request)
         ])
