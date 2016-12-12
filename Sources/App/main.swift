@@ -22,7 +22,7 @@ try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 // Admin panel
-drop.group(AuthMiddleware<BackendUser>()) { auth in
+drop.group(AuthMiddleware<BackendUser>(), FlashMiddleware()) { auth in
     auth.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
     
     auth.group(Admin.AuthRedirectMiddleware(), ProtectMiddleware(error: AuthError.notAuthenticated)) { secured in

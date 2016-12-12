@@ -7,12 +7,6 @@ let package = Package(
         Target(name: "App", dependencies: [
             .Target(name: "Admin")
             ]),
-        /*
-        Target(name: "Storage"),
-        Target(name: "App", dependencies: [
-            .Target(name: "Storage")
-            ])
-        */
     ],
     dependencies: [
         .Package(url: "https://github.com/vapor/vapor.git", majorVersion: 1, minor: 3),

@@ -24,9 +24,7 @@ public final class LoginController {
     }
     
     public func resetPasswordForm(request: Request) throws -> ResponseRepresentable {
-        return try drop.view.make("Login/reset", [
-            "flash": try FlashHelper.retrieve(request)
-        ])
+        return try drop.view.make("Login/reset", for: request)
     }
     
     public func resetPasswordSubmit(request: Request) throws -> ResponseRepresentable {
@@ -49,10 +47,8 @@ public final class LoginController {
     }
     
     public func form(request: Request) throws -> ResponseRepresentable {
-        request.storage["test"] = "yes"
-        return try drop.view.make("Login/login", [
-            "flash": try FlashHelper.retrieve(request)
-        ], for: request)
+        print(request.storage["_flash"])
+        return try drop.view.make("Login/login", for: request)
     }
     
     public func submit(request: Request) throws -> ResponseRepresentable {

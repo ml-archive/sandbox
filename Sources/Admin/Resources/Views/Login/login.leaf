@@ -24,7 +24,6 @@
                     #embed("Layout/Elements/logo")
                 </div>
                 <h3 class="panel-title margin-bottom">Login</h3>
-                <h5>here: #(request.storage.test)</h5>
             </div>
             #embed("Layout/Elements/alerts")
             <form method="post" action="/admin/login">
