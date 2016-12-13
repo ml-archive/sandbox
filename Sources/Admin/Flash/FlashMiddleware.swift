@@ -10,8 +10,6 @@ public class FlashMiddleware: Middleware {
         try FlashHelper.apply(request)
     
         let respond = try next.respond(to: request)
-        
-        //try print(request.session().data)
        
         return respond
     }
