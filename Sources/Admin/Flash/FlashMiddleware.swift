@@ -8,10 +8,11 @@ public class FlashMiddleware: Middleware {
     public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
         
         try FlashHelper.apply(request)
+    
         let respond = try next.respond(to: request)
         
-       // try FlashHelper.clearNew(request)
-        
+        //try print(request.session().data)
+       
         return respond
     }
 }

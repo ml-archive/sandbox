@@ -51,7 +51,6 @@ drop.group(AuthMiddleware<User>()) { auth in
         api.post("login", handler: usersController.login)
         
         
-        
         /*
          * Secured Endpoints
          * Anything in here requires the Authorication header:

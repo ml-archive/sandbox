@@ -25,15 +25,22 @@ public final class FlashHelper {
         try self.add(request, type: .success, message: message)
     }
     
-    public static func apply(_ request: Request) throws {
-        let newNode =  try request.session().data[flashKey, State.new.rawValue] ?? Node([])
-        
-        try request.session().data[flashKey, State.old.rawValue] = newNode
-        
-        request.storage[flashKey] = newNode
+    public static func refresh(_ request: Request) throws {
+        // Copy old to new
+        try request.session().data[flashKey, State.new.rawValue] = try request.session().data[flashKey, State.old.rawValue] ?? Node([])
     }
     
-    public static func clearNew(_ request: Request) throws {
-        try request.session().data[flashKey, State.new.rawValue] = Node([])
+    public static func apply(_ request: Request) throws {
+        // Init flash node
+        let flash = try request.session().data[flashKey, State.new.rawValue] ?? Node([])
+        
+        // Move new to old
+        try request.session().data[flashKey, State.old.rawValue] = flash
+        
+        // Apply to request storage
+        request.storage[flashKey] = flash
+        
+        // Clear new
+        try request.session().data[flashKey, State.new.rawValue] = nil
     }
 }

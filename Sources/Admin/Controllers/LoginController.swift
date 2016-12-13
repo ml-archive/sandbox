@@ -47,7 +47,6 @@ public final class LoginController {
     }
     
     public func form(request: Request) throws -> ResponseRepresentable {
-        print(request.storage["_flash"])
         return try drop.view.make("Login/login", for: request)
     }
     
@@ -66,7 +65,7 @@ public final class LoginController {
             return Response(redirect: "/admin/dashboard");
         } catch {
             try FlashHelper.addError(request, message: "Failed to login")
-            return Response(redirect: "/admin");
+            return Response(redirect: "/admin/login");
         }
         
     }
