@@ -6,11 +6,17 @@ public class AuthRedirectMiddleware: Middleware {
     public init() {}
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
+        // TODO move
+        do {
+            try request.storage["user"] = request.auth.user()
+        } catch {
+            
+        }
+        
         do {
             return try next.respond(to: request)
         } catch AuthError.notAuthenticated {
-            try FlashHelper.addError(request, message: "Session expired login again")
-            return Response(redirect: "/admin/login");
+            return Response(redirect: "/admin/login").flash(.error, "Session expired login again");
         }
     }
 }

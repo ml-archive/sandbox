@@ -2,8 +2,8 @@ import HTTP
 import Node
 
 extension Response {
-    public func flash(_ flashType: FlashHelper.FlashType, _ message: String) -> Response{
-        self.storage[FlashHelper.flashKey] = Node([
+    public func flash(_ flashType: Helper.FlashType, _ message: String) -> Response{
+        self.storage[Helper.flashKey] = Node([
             flashType.rawValue: Node(message)
         ])
         

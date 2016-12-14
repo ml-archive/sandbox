@@ -49,6 +49,7 @@
                 
             <section class="core-layout__content">
                 <div class="page-header">
+                    #embed("Layout/Elements/alerts")
                     <div class="page-header__breadcrumbs">
                         <ol class="breadcrumb">
                             <li>
@@ -57,6 +58,7 @@
                             #import("breadcrumbs")
                         </ol>
                     </div>
+                    
                     <div class="page-header__top-section">
                         #import("page-header")
                     </div>

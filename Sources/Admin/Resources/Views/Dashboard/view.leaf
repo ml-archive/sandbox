@@ -7,5 +7,6 @@
 }
 
 #export("content") {
-    DASHBOARD
+#(request.storage.user.email)
+#(request.session.data.user.email)
 }

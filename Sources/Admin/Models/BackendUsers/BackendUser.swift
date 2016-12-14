@@ -20,6 +20,7 @@ public final class BackendUser: Auth.User, Model {
     public var createdAt: DateInRegion
     public var updatedAt: DateInRegion
     
+    
     enum Error: Swift.Error {
         case userNotFound
         case registerNotSupported
