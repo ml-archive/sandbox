@@ -44,8 +44,24 @@
                     <input type="email" id="backendUserFormEmail" class="form-control" name="email" value="#if(backendUser) { #(backendUser.email) }" required>
                 </div>
                 <div class="form-group">
-                    <label for="backendUserFormRole">Role</label>
+                    <select name="role" class="form-control">
+                        #loop(roles, "role") {
+                            #if(backendUser) {
+                                #if(role.slug == backendUser.role) {
+                                    <option value="#(role.name)" selected>#(role.title)</option>
+                                } ##else() {
+                                    <option value="#(role.name)">#(role.title)</option>
+                                }
+                            } ##else() {
+                                <option value="#(role.name)">#(role.title)</option>
+                            }
+                        }
+                        
+                        
+                    </select>
+                    <!--<label for="backendUserFormRole">Role</label>
                     <input type="text" id="backendUserFormRole" class="form-control" name="role" value="#if(backendUser) { #(backendUser.role) }">
+                     -->
                 </div>
                 <div class="form-group">
                     <input name="send_mail" value="false" type="hidden">

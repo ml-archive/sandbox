@@ -21,11 +21,10 @@ public final class BackendUsersController {
      * - return: View
      */
     public func index(request: Request) throws -> ResponseRepresentable {
-        let users = try BackendUser.all() // todo pagination && search
-        let userNodes = try users.map({ try $0.makeNode() })
+        let users = try BackendUser.all().makeNode() // todo pagination && search
         
         return try drop.view.make("BackendUsers/index", [
-            "users": Node(userNodes)
+            "users": users
         ], for: request)
     }
 
@@ -36,7 +35,9 @@ public final class BackendUsersController {
      * - return: View
      */
     public func create(request: Request) throws -> ResponseRepresentable {
-        return try drop.view.make("BackendUsers/edit", for: request)
+        return try drop.view.make("BackendUsers/edit", [
+                "roles": BackendUserRole.all().makeNode()
+            ], for: request)
     }
     
     /**
@@ -68,7 +69,8 @@ public final class BackendUsersController {
      */
     public func edit(request: Request, user: BackendUser) throws -> ResponseRepresentable {
         return try drop.view.make("BackendUsers/edit", [
-            "backendUser": try user.makeNode()
+            "backendUser": try user.makeNode(),
+            "roles": BackendUserRole.all().makeNode()
         ], for: request)
     }
     
