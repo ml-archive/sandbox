@@ -61,11 +61,11 @@ public final class LoginController {
             try request.auth.login(credentials)
             
             // Todo deal with remember me
-            
-            return Response(redirect: "/admin/dashboard");
+        
+            return Response(redirect: "/admin/dashboard")
         } catch {
-            try FlashHelper.addError(request, message: "Failed to login")
-            return Response(redirect: "/admin/login");
+            //try FlashHelper.addError(request, message: "Failed to login")
+            return Response(redirect: "/admin/login").flash(.error, "Failed to login");
         }
         
     }

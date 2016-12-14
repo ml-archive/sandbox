@@ -7,11 +7,13 @@ public class FlashMiddleware: Middleware {
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
         
-        try FlashHelper.apply(request)
+        try FlashHelper.handleRequest(request)
     
-        let respond = try next.respond(to: request)
-       
-        return respond
+        let response = try next.respond(to: request)
+        
+        try FlashHelper.handleResponse(response, request)
+        
+        return response
     }
 }
 

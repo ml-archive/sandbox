@@ -17,10 +17,16 @@ public final class FlashHelper {
         try request.session().data[flashKey, State.new.rawValue, type.rawValue] = Node(message)
     }
     
+    public static func add(_ response: Response, type: FlashType, message: String) throws {
+        //try response.storage[flashKey, State.new.rawValue, type.rawValue] = Node(message)
+    }
+    
+    // remove
     public static func addError(_ request: Request, message: String) throws {
         try self.add(request, type: .error, message: message)
     }
     
+    // remove
     public static func addSuccess(_ request: Request, message: String) throws {
         try self.add(request, type: .success, message: message)
     }
@@ -30,7 +36,7 @@ public final class FlashHelper {
         try request.session().data[flashKey, State.new.rawValue] = try request.session().data[flashKey, State.old.rawValue] ?? Node([])
     }
     
-    public static func apply(_ request: Request) throws {
+    public static func handleRequest(_ request: Request) throws {
         // Init flash node
         let flash = try request.session().data[flashKey, State.new.rawValue] ?? Node([])
         
@@ -42,5 +48,9 @@ public final class FlashHelper {
         
         // Clear new
         try request.session().data[flashKey, State.new.rawValue] = nil
+    }
+    
+    public static func handleResponse(_ response: Response, _ request: Request) throws {
+        response.
     }
 }
