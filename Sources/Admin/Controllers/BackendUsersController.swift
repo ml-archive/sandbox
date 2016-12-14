@@ -51,8 +51,8 @@ public final class BackendUsersController {
             try backendUser.save()
             
             return Response(redirect: "/admin/backend_users").flash(.success, "User created")
-        } catch let error as ValidationError<Email> {
-            let message = "Email validation error: \(error.message)"
+        } catch let error as ValidationErrorProtocol {
+            let message = "Validation error: \(error.message)"
             return Response(redirect: "/admin/backend_users/create").flash(.error, message)
         } catch {
             return Response(redirect: "/admin/backend_users/create").flash(.error, "Failed to create user")
