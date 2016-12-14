@@ -44,55 +44,70 @@
                     <input type="email" id="backendUserFormEmail" class="form-control" name="email" value="#if(backendUser) { #(backendUser.email) }" required>
                 </div>
                 <div class="form-group">
-                    <select name="role" class="form-control">
+                    <label for="backendUserFormRole">Role</label>
+                    <select name="role" class="form-control id=backendUserFormRole">
                         #loop(roles, "role") {
+                            <!--TODO AUTO SELECT selected or default-->
                             #if(backendUser) {
-                                #if(role.slug == backendUser.role) {
-                                    <option value="#(role.name)" selected>#(role.title)</option>
+                                #if(role.slug == backendUser.role) { <!--DOES NOT WORK AT THE MOMENT -->
+                                    <option value="#(role.slug)" selected>#(role.title)</option>
                                 } ##else() {
-                                    <option value="#(role.name)">#(role.title)</option>
+                                    <option value="#(role.slug)">#(role.title)</option>
                                 }
                             } ##else() {
-                                <option value="#(role.name)">#(role.title)</option>
+                                <option value="#(role.slug)">#(role.title)</option>
                             }
                         }
-                        
-                        
                     </select>
-                    <!--<label for="backendUserFormRole">Role</label>
-                    <input type="text" id="backendUserFormRole" class="form-control" name="role" value="#if(backendUser) { #(backendUser.role) }">
-                     -->
+                    
                 </div>
+                
+                <!-- FIX IF & Make checkbox -->
+                #if(backendUser) {
+                } ##else() {
                 <div class="form-group">
-                    <input name="send_mail" value="false" type="hidden">
-                    <label>
-                        <input type="checkbox" id="backendUserFormSendMail" name="send_mail">
-                        Send email with information
-                    </label>
+                    <label for="backendUserFormSendMail">Send mail with information</label>
+                    <select name="send_mail" class="form-control" id="backendUserFormSendMail">
+                        <option value="true" selected>Yes</option>
+                        <option value="false">No</option>
+                    </select>
                 </div>
+                }
+                
             </div>
             <br>
             <h4 class="margin-top">
-                Choose password <small class="text-gray-dark">(leave empty for random) (min. 6 characters)</small>
+                Choose password <small class="text-gray-dark">(leave empty for random) (min. 8 characters)</small>
             </h4>
             <hr/>
             <div class="margin-top">
                 <div class="form-group">
                     <label for="backendUserFormPassword">Password</label>
-                    <input type="password" id="backendUserFormPassword" class="form-control" name="password">
+                    <input type="password" id="backendUserFormPassword" class="form-control" name="password" minlength="8">
                 </div>
             
                 <div class="form-group">
                     <label for="backendUserFormRepeatPassword">Repeat password</label>
-                    <input type="password" id="backendUserFormRepeatPassword" class="form-control" name="passwordRepeat">
+                    <input type="password" id="backendUserFormRepeatPassword" class="form-control" name="passwordRepeat" minlength="8">
                 </div>
+               
+               <!-- FIX Preselected & Make checkbox -->
+                <div class="form-group">
+                    <label for="backendUserFormResetPwOnLogin">Reset password on next login</label>
+                    <select name="should_reset_password" class="form-control" id="backendUserFormResetPwOnLogin">
+                        <option value="true">Yes</option>
+                        <option value="false" selected>No</option>
+                    </select>
+                </div>
+                <!--
                 <div class="form-group">
                     <input name="should_reset_password" value="false" type="hidden">
                     <label>
                         <input type="checkbox" id="backendUserFormResetPwOnLogin" name="should_reset_password">
-                        Send email with information
+                        Reset password on next login
                     </label>
                 </div>
+                 -->
             </div>
         </div>
         <div class="col-xs-12 col-md-6">

@@ -19,6 +19,7 @@ public final class BackendUser: Auth.User, Model {
     public var role: String // TODO check
     public var createdAt: DateInRegion
     public var updatedAt: DateInRegion
+    public var shouldResetPassword: Bool = false
     
     enum Error: Swift.Error {
         case userNotFound
@@ -35,11 +36,11 @@ public final class BackendUser: Auth.User, Model {
         let emailTemp: String = try node.extract("email")
         email = try emailTemp.validated()
         
-        let passwordTemp: String = try node.extract("password")
-        password = try passwordTemp
+        password = try node.extract("password")
         
-        let roleTemp: String = try node.extract("role")
-        role = roleTemp
+        role = try node.extract("role")
+        
+        shouldResetPassword = try node.extract("should_reset_password") ?? false
         
         do {
             createdAt = try DateInRegion(string: node.extract("created_at"), format: .custom("yyyy-MM-dd HH:mm:ss"))
@@ -67,11 +68,27 @@ public final class BackendUser: Auth.User, Model {
         name = try (request.data["name"]?.string ?? "").validated()
         email = try request.data["email"].validated()
         
-        let passwordTemp: String = request.data["password"]?.string ?? ""
-        try passwordTemp.validated(by: PasswordISO123())
+        // Random password if no password is set
+        if let passwordString: String = request.data["password"]?.string {
+            _ = try passwordString.validated(by: PasswordISO123())
+            
+            // TODO
+            if(passwordString != "") {
+                throw Abort.badRequest
+            }
+            
+            password = BCrypt.hash(password: passwordString)
+        } else {
+            password = BCrypt.hash(password: String.randomAlphaNumericString())
+        }
         
-        password = BCrypt.hash(password: passwordTemp)
         role = request.data["role"]?.string ?? "user"
+        
+        
+        if let shouldResetPasswordTemp: String = request.data["should_reset_password"]?.string {
+            shouldResetPassword = shouldResetPasswordTemp == "true"
+        }
+        
         self.updatedAt = DateInRegion()
         self.createdAt = DateInRegion()
     }
@@ -83,6 +100,7 @@ public final class BackendUser: Auth.User, Model {
             "email": email.value,
             "password": password,
             "role": role,
+            "should_reset_password": shouldResetPassword,
             "created_at": createdAt.string(custom: "yyyy-MM-dd HH:mm:ss"),
             "updated_at": updatedAt.string(custom: "yyyy-MM-dd HH:mm:ss")
         ])
@@ -95,6 +113,7 @@ public final class BackendUser: Auth.User, Model {
             table.string("email", unique: true)
             table.string("password")
             table.string("role")
+            table.bool("should_reset_password", default: Node(false))
             table.custom("created_at", type: "DATETIME", optional: true)
             table.custom("updated_at", type: "DATETIME", optional: true)
         }

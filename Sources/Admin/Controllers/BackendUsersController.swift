@@ -51,6 +51,8 @@ public final class BackendUsersController {
             var backendUser = try BackendUser(request: request)
             try backendUser.save()
             
+            // TODO Send welcome mail
+            
             return Response(redirect: "/admin/backend_users").flash(.success, "User created")
         } catch let error as ValidationErrorProtocol {
             let message = "Validation error: \(error.message)"
@@ -108,9 +110,12 @@ public final class BackendUsersController {
      * - return: View
      */
     public func destroy(request: Request, user: BackendUser) throws -> ResponseRepresentable {
-        try user.delete()
-        
-        return Response(redirect: "/admin/backend_user")
+        do {
+            try user.delete()
+            return Response(redirect: "/admin/backend_users").flash(.success, "Deleted user")
+        } catch {
+            return Response(redirect: "/admin/backend_users").flash(.error, "Failed to delete user")
+        }
     }
  
 }
