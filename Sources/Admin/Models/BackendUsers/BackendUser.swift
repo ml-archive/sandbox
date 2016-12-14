@@ -13,13 +13,12 @@ public final class BackendUser: Auth.User, Model {
     public static var entity = "backend_users"
     
     public var id: Node?
-    public var name: String
+    public var name: Valid<NotEmpty>
     public var email: Valid<Email>
     public var password: String
-    public var role: String
+    public var role: String // TODO check
     public var createdAt: DateInRegion
     public var updatedAt: DateInRegion
-    
     
     enum Error: Swift.Error {
         case userNotFound
@@ -29,11 +28,18 @@ public final class BackendUser: Auth.User, Model {
     
     public init(node: Node, in context: Context) throws {
         id = try node.extract("id")
-        name = try node.extract("name")
+        
+        let nameTemp: String = try node.extract("name")
+        name = try nameTemp.validated()
+        
         let emailTemp: String = try node.extract("email")
         email = try emailTemp.validated()
-        password = try node.extract("password")
-        role = try node.extract("role")
+        
+        let passwordTemp: String = try node.extract("password")
+        password = try passwordTemp
+        
+        let roleTemp: String = try node.extract("role")
+        role = roleTemp
         
         do {
             createdAt = try DateInRegion(string: node.extract("created_at"), format: .custom("yyyy-MM-dd HH:mm:ss"))
@@ -49,7 +55,7 @@ public final class BackendUser: Auth.User, Model {
     }
     
     public init(credentials: UsernamePassword) throws {
-        self.name = ""
+        self.name = try "N/A".validated()
         self.email = try credentials.username.validated()
         self.password = BCrypt.hash(password: credentials.password)
         self.role = ""
@@ -58,9 +64,13 @@ public final class BackendUser: Auth.User, Model {
     }
     
     public init(request: Request) throws {
-        name = request.data["name"]?.string ?? ""
+        name = try (request.data["name"]?.string ?? "").validated()
         email = try request.data["email"].validated()
-        password = BCrypt.hash(password: request.data["password"]?.string ?? "")
+        
+        let passwordTemp: String = request.data["password"]?.string ?? ""
+        try passwordTemp.validated(by: PasswordISO123())
+        
+        password = BCrypt.hash(password: passwordTemp)
         role = request.data["role"]?.string ?? "user"
         self.updatedAt = DateInRegion()
         self.createdAt = DateInRegion()
@@ -69,7 +79,7 @@ public final class BackendUser: Auth.User, Model {
     public func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
-            "name": name,
+            "name": name.value,
             "email": email.value,
             "password": password,
             "role": role,

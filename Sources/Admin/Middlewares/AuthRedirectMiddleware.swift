@@ -1,6 +1,7 @@
 import Vapor
 import HTTP
 import Auth
+import Turnstile
 
 public class AuthRedirectMiddleware: Middleware {
     public init() {}
@@ -10,7 +11,10 @@ public class AuthRedirectMiddleware: Middleware {
         do {
             try request.storage["user"] = request.auth.user()
         } catch {
-            
+            // Auto login for debug
+            let credentials = UsernamePassword(username: "tech@nodes.dk", password: "admin")
+            try request.auth.login(credentials)
+            try request.storage["user"] = request.auth.user()
         }
         
         do {

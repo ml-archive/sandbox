@@ -19,6 +19,7 @@ drop.view = LeafRenderer(
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
+
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 // Admin panel
@@ -84,9 +85,8 @@ drop.group(AuthMiddleware<User>()) { auth in
 drop.preparations.append(Admin.BackendUserResetPasswordTokens.self)
 drop.preparations.append(Admin.BackendUserRole.self)
 drop.preparations.append(Admin.BackendUser.self)
-
+//drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
-
 
 /*
  view: LeafRenderer(

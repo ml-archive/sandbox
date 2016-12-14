@@ -53,11 +53,11 @@
                     </td>
                     <td class="text-center">#(user.role)</td>
                     <td class="text-center">
-                        <a href="/admin/users/edit/#(user.id)" class="btn btn-sm btn-default" data-tooltip="true" title="Edit details">
+                        <a href="/admin/backend_users/edit/#(user.id)" class="btn btn-sm btn-default" data-tooltip="true" title="Edit details">
                             <span class="fa fa-pencil"></span>
                             <span class="sr-only">Edit details</span>
                         </a>
-                        <a href="/admin/users/delete/#(user.id)" class="btn btn-sm btn-danger" data-tooltip="true" title="Delete user">
+                        <a href="/admin/backend_users/delete/#(user.id)" class="btn btn-sm btn-danger" data-tooltip="true" title="Delete user">
                             <span class="fa fa-times"></span>
                             <span class="sr-only">Delete user</span>
                         </a>
