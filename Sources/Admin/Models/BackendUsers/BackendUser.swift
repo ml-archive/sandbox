@@ -57,16 +57,14 @@ public final class BackendUser: Auth.User, Model {
         self.createdAt = DateInRegion()
     }
     
-    /*
     public init(request: Request) throws {
         name = request.data["name"]?.string ?? ""
         email = try request.data["email"].validated()
         password = BCrypt.hash(password: request.data["password"]?.string ?? "")
         role = request.data["role"]?.string ?? "user"
-        createdAt = request.data["created_at"]?.int ?? 0
-        updatedAt = request.data["updated_at"]?.int ?? 0
+        self.updatedAt = DateInRegion()
+        self.createdAt = DateInRegion()
     }
-    */
     
     public func makeNode(context: Context) throws -> Node {
         return try Node(node: [

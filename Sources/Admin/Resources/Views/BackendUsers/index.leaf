@@ -21,7 +21,7 @@
             </div>
         </form>
         
-        <a href="/admin/users/create" class="btn btn-primary btn-sm pull-right">
+        <a href="/admin/backend_users/create" class="btn btn-primary btn-sm pull-right">
             <span class="fa fa-user-plus"></span>
             <span class="hidden-xs">Create backend user</span>
         </a>

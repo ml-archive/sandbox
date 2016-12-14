@@ -19,7 +19,7 @@ public final class LoginController {
             guard let user: BackendUser = try request.auth.user() as? BackendUser else {
                 throw Abort.custom(status: .forbidden, message: "Forbidden")
             }
-
+            
             return Response(redirect: "/admin/dashboard").flash(.success, "Logged in as \(user.email.value)")
         } catch {
             return Response(redirect: "/admin/login").flash(.error, "Please login")

@@ -25,6 +25,10 @@ public final class Helper {
         try request.session().data[Helper.flashKey, State.new.rawValue, type.rawValue] = Node(message)
     }
     
+    public func add(_ custom: String, _ message: String) throws {
+        try request.session().data[Helper.flashKey, State.new.rawValue, custom] = Node(message)
+    }
+    
     public func refresh() throws {
         // Copy old node to new node
         try request.session().data[Helper.flashKey, State.new.rawValue] = try request.session().data[Helper.flashKey, State.old.rawValue] ?? Node([])

@@ -26,7 +26,7 @@ public final class BackendUsersController {
         
         return try drop.view.make("BackendUsers/index", [
             "users": Node(userNodes)
-        ])
+        ], for: request)
     }
 
     /**
@@ -36,7 +36,7 @@ public final class BackendUsersController {
      * - return: View
      */
     public func create(request: Request) throws -> ResponseRepresentable {
-        return try drop.view.make("BackendUsers/edit")
+        return try drop.view.make("BackendUsers/edit", for: request)
     }
     
     /**
@@ -46,10 +46,20 @@ public final class BackendUsersController {
      * - return: View
      */
     public func store(request: Request) throws -> ResponseRepresentable {
-        //var backendUser = try BackendUser(request: request)
-        //try backendUser.save()
+        do {
+            var backendUser = try BackendUser(request: request)
+            try backendUser.save()
+            
+            return Response(redirect: "/admin/backend_users").flash(.success, "User created")
+        }
         
-        return Response(redirect: "/admin/users?created=true")
+        catch ValidationError<Email> {
+            return Response(redirect: "/admin/backend_users/create").flash(.error, "Validation error")
+        }
+        
+        catch {
+            return Response(redirect: "/admin/backend_users/create").flash(.error, "Failed to create user")
+        }
     }
     
     /**
@@ -62,7 +72,7 @@ public final class BackendUsersController {
     public func edit(request: Request, user: BackendUser) throws -> ResponseRepresentable {
         return try drop.view.make("BackendUsers/edit", [
             "backendUser": try user.makeNode()
-        ])
+        ], for: request)
     }
     
     /**
@@ -88,7 +98,7 @@ public final class BackendUsersController {
         // Save
         try backendUser.save()
         
-        return Response(redirect: "/admin/users?updated=true")
+        return Response(redirect: "/admin/backend_users")
     }
     
     /**
@@ -101,7 +111,7 @@ public final class BackendUsersController {
     public func destroy(request: Request, user: BackendUser) throws -> ResponseRepresentable {
         try user.delete()
         
-        return Response(redirect: "/admin/users?deleted=true")
+        return Response(redirect: "/admin/backend_user")
     }
  
 }
