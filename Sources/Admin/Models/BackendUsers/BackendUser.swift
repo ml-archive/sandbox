@@ -72,11 +72,9 @@ public final class BackendUser: Auth.User, Model {
         if let passwordString: String = request.data["password"]?.string {
             _ = try passwordString.validated(by: PasswordISO123())
             
-            // TODO
             if(passwordString != "") {
                 throw Abort.badRequest
             }
-            
             password = BCrypt.hash(password: passwordString)
         } else {
             password = BCrypt.hash(password: String.randomAlphaNumericString())
