@@ -55,4 +55,15 @@ public final class BackendUserRolesController {
             return Response(redirect: "/admin/backend_users/roles").flash(.error, "Failed to update role");
         }
     }
+    
+    public func delete(request: Request, role: BackendUserRole) throws -> ResponseRepresentable {
+        do {
+
+            try role.delete()
+            
+            return Response(redirect: "/admin/backend_users/roles").flash(.success, "Role is deleted");
+        } catch {
+            return Response(redirect: "/admin/backend_users/roles").flash(.error, "Failed to delete role");
+        }
+    }
 }
