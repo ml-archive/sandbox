@@ -19,10 +19,9 @@ public final class BackendUserRolesController {
         let roles = try BackendUserRole.all()
         let rolesNodes = try roles.map({ try $0.makeNode() })
         
-        
         return try drop.view.make("BackendUsers/roles", [
             "roles": Node(rolesNodes)
-        ])
+            ], for: request)
     }
 
     public func store(request: Request) throws -> ResponseRepresentable {

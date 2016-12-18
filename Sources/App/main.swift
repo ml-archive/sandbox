@@ -18,6 +18,10 @@ drop.view = LeafRenderer(
     viewsDir: Droplet().workDir + "Sources/Admin/Resources/Views"
 )
 
+if let leaf = drop.view as? LeafRenderer {
+    leaf.stem.register(ActiveLeafTag())
+}
+
 try drop.addProvider(VaporMySQL.Provider.self)
 
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
