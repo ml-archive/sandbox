@@ -19,5 +19,6 @@ public struct BackendUserRolesRoutes: RouteCollection {
         builder.get("/", handler: controller.index)
         builder.post("/create", handler: controller.store)
         builder.post("/edit", handler: controller.update)
+        builder.get("/default", BackendUserRole.self, handler: controller.setDeault)
     }
 }

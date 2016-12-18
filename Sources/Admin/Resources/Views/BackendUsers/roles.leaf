@@ -49,7 +49,7 @@
                     </td>
                     }
                     <td class="text-center">
-                        <a href="#()" class="btn btn-sm btn-default" data-tooltip="true" title="Set as default">
+                        <a href="/admin/backend_users/roles/default/#(role.id)" class="btn btn-sm btn-default" data-tooltip="true" title="Set as default">
                             <span class="fa fa-heart"></span>
                             <span class="sr-only">Set as default</span>
                         </a>
