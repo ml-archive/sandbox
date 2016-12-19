@@ -23,6 +23,9 @@ try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 try drop.addProvider(AdminPanel.Provider(drop: drop))
 
+//drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
+drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
+
 //API
 /*
 drop.group(AuthMiddleware<User>()) { auth in
@@ -72,10 +75,6 @@ drop.group(AuthMiddleware<User>()) { auth in
 }
 */
 
-
-
-//drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
-drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
 
 /*
  view: LeafRenderer(
