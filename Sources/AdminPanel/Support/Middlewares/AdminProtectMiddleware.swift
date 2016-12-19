@@ -9,7 +9,9 @@ public class AdminProtectMiddleware: Middleware {
     }
     
     public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
-        guard let _ = request.storage["subject"] as? Subject else {
+        do {
+            try request.storage["user"] = request.auth.user()
+        } catch {
             return Response(redirect: "/admin/login").flash(.error, "Session expired login again");
         }
         

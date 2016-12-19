@@ -24,6 +24,7 @@ try drop.addProvider(VaporRedis.Provider(config: drop.config))
 try drop.addProvider(AdminPanel.Provider(drop: drop))
 
 //API
+/*
 drop.group(AuthMiddleware<User>()) { auth in
     auth.group("api") { api in
         
@@ -69,7 +70,7 @@ drop.group(AuthMiddleware<User>()) { auth in
         }
     }
 }
-
+*/
 
 
 
@@ -118,10 +119,6 @@ let log = drop.log.self
 //try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
 
 let translate = drop.nstack?.application.translate.self
-
-if drop.config["app"] == nil {
-    throw Abort.custom(status: .internalServerError, message: "Config was not loaded, might have an error")
-}
 
 drop.get("seeder") { request in
     try Seeder(console: drop.console).run(arguments: [])
