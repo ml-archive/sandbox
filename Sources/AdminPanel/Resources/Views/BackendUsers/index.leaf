@@ -2,7 +2,7 @@
 
 #export("breadcrumbs") {
     <li class="active">
-        <span>Users</span>
+        <span>Backend users</span>
     </li>
 }
 

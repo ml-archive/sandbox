@@ -2,7 +2,7 @@
 
 #export("breadcrumbs") {
 <li>
-    <a href="/admin/backend_users">Users</a>
+    <a href="/admin/backend_users">Backend users</a>
 </li>
 <li class="active">
     #if(backendUser) {
