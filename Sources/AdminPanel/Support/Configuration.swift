@@ -28,6 +28,14 @@ public struct Configuration {
         self.loadRoutes          = try Configuration.extract(field: .loadRoutes, drop: drop)
     }
     
+    public func makeNode() -> Node {
+        return Node([
+            "name": Node(name),
+            "unauthorizedPath": Node(unauthorizedPath),
+            "loadRoutes": Node(loadRoutes)
+        ])
+    }
+    
     private static func extract(field: Field , drop: Droplet) throws -> String {
         guard let string = drop.config[field.path]?.string else {
             throw field.error

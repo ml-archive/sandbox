@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Sandbox</title>
+    <title>#(request.storage.adminPanel.name)</title>
     <link rel="stylesheet" media="screen" href="/css/app.css">
 </head>
     

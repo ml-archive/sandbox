@@ -1,5 +1,5 @@
 {
-    "name": "Sandbox",
+    "name": "Sandbox2",
     "unauthorizedPath": "/admin/login",
     "loadRoutes": true
 }
