@@ -8,5 +8,5 @@
 
 #export("content") {
 #(request.storage.user.email)
-#(request.session.data.user.email)
+
 }
