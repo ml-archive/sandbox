@@ -53,10 +53,6 @@
                             <span class="fa fa-heart"></span>
                             <span class="sr-only">Set as default</span>
                         </a>
-                        <button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#()roleModal" data-role="#(role.title)" data-role-id="#(role.id)" data-tooltip="true" title="Edit details">
-                            <span class="fa fa-pencil"></span>
-                            <span class="sr-only">Edit details</span>
-                        </button>
                         <a href="/admin/backend_users/roles/delete/#(role.id)" class="btn btn-sm btn-danger" data-tooltip="true" title="Delete user">
                             <span class="fa fa-times"></span>
                             <span class="sr-only">Delete user</span>
@@ -78,11 +74,11 @@
                 </button>
                 <h4 class="modal-title" id="roleModalLabel">Create role</h4>
             </header>
-            <form method="post" action="/admin/users/roles/create">
+            <form method="post" action="/admin/backend_users/roles/create">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="roleName" class="sr-only">Role title</label>
-                        <input type="text" id="roleName" class="form-control" name="title" placeholder="Name of role">
+                        <input type="text" id="roleName" class="form-control" name="title" placeholder="Name of role" required>
                     </div>
                 </div>
                 <div class="modal-footer">

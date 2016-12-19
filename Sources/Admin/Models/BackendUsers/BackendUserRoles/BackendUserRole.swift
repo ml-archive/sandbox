@@ -9,7 +9,7 @@ public final class BackendUserRole: Model {
     public var exists: Bool = false
     
     public var id: Node?
-    public var title: String
+    public var title: Valid<NotEmpty>
     public var slug: String
     public var isDefault: Bool
     public var createdAt: DateInRegion
@@ -17,7 +17,10 @@ public final class BackendUserRole: Model {
     
     public init(node: Node, in context: Context) throws {
         id = try? node.extract("id")
-        title = try node.extract("title")
+        
+        let titleTemp: String = try node.extract("title")
+        title = try titleTemp.validated()
+        
         slug = try node.extract("slug")
         isDefault = try node.extract("is_default") ?? false
         
@@ -34,20 +37,18 @@ public final class BackendUserRole: Model {
         }
     }
     
-    /*
     public init(request: Request) throws {
-        title = request.data["title"]?.string ?? ""
-        slug = request.data["slug"]?.string ?? ""
-        isDefault = false
+        title = try (request.data["title"]?.string ?? "").validated()
+        slug = title.value.slugify()
+        isDefault = try BackendUserRole.query().first() != nil ? false : true
         updatedAt = DateInRegion()
         createdAt = DateInRegion()
     }
-    */
     
     public func makeNode(context: Context) throws -> Node {
         return try Node(node: [
             "id": id,
-            "title": title,
+            "title": title.value,
             "slug": slug,
             "is_default": isDefault,
             "created_at": createdAt.string(custom: "yyyy-MM-dd HH:mm:ss"),

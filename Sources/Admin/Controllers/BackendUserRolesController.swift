@@ -21,19 +21,20 @@ public final class BackendUserRolesController {
         
         return try drop.view.make("BackendUsers/roles", [
             "roles": Node(rolesNodes)
-            ], for: request)
+        ], for: request)
     }
 
     public func store(request: Request) throws -> ResponseRepresentable {
-        /*
-        var role = try BackendUserRole(request: request)
-        try role.save()
-        */
-        return Response(redirect: "/admin/users/roles?created=true");
-    }
-    
-    public func update(request: Request) throws -> ResponseRepresentable {
-        return Response(redirect: "/admin/users/roles?updated=true");
+        do {
+            var role = try BackendUserRole(request: request)
+            try role.save()
+            return Response(redirect: "/admin/backend_users/roles").flash(.success, "Role created");
+        }catch let error as ValidationErrorProtocol {
+            let message = "Validation error: \(error.message)"
+            return Response(redirect: "/admin/backend_users/roles").flash(.error, message);
+        }catch {
+            return Response(redirect: "/admin/backend_users/roles").flash(.error, "Failed to save role");
+        }
     }
     
     public func setDeault(request: Request, role: BackendUserRole) throws -> ResponseRepresentable {
