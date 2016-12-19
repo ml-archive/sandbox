@@ -3,9 +3,9 @@ import PackageDescription
 let package = Package(
     name: "sandbox",
     targets: [
-        Target(name: "Admin"),
+        Target(name: "AdminPanel"),
         Target(name: "App", dependencies: [
-            .Target(name: "Admin")
+            .Target(name: "AdminPanel")
             ]),
     ],
     dependencies: [

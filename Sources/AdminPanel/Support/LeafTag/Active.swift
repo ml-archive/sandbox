@@ -3,7 +3,7 @@ import Leaf
 import Node
 import Vapor
 
-public class ActiveLeafTag: BasicTag {
+public class Active: BasicTag {
     public init(){}
     public let name = "active"
     private let key = "active"

@@ -15,7 +15,7 @@ import Sessions
 let drop = Droplet()
 
 drop.view = LeafRenderer(
-    viewsDir: Droplet().workDir + "Sources/Admin/Resources/Views"
+    viewsDir: Droplet().workDir + "Sources/AdminPanel/Resources/Views"
 )
 
 if let leaf = drop.view as? LeafRenderer {
