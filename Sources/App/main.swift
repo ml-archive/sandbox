@@ -19,9 +19,9 @@ drop.view = LeafRenderer(
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
+try drop.addProvider(AdminPanel.Provider(drop: drop))
 
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
-try drop.addProvider(AdminPanel.Provider(drop: drop))
 
 //drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
