@@ -10,7 +10,7 @@ public final class BackendUserRole: Model {
     
     public var id: Node?
     public var title: Valid<NotEmpty>
-    public var slug: String
+    public var slug: Valid<NotEmpty>
     public var isDefault: Bool
     public var createdAt: DateInRegion
     public var updatedAt: DateInRegion
@@ -21,7 +21,10 @@ public final class BackendUserRole: Model {
         let titleTemp: String = try node.extract("title")
         title = try titleTemp.validated()
         
-        slug = try node.extract("slug")
+        let slugTemp: String = try node.extract("slug")
+        slug = try slugTemp.validated()
+        
+        
         isDefault = try node.extract("is_default") ?? false
         
         do {
@@ -39,7 +42,7 @@ public final class BackendUserRole: Model {
     
     public init(request: Request) throws {
         title = try (request.data["title"]?.string ?? "").validated()
-        slug = title.value.slugify()
+        slug = try title.value.slugify().validated()
         isDefault = try BackendUserRole.query().first() != nil ? false : true
         updatedAt = DateInRegion()
         createdAt = DateInRegion()
@@ -49,11 +52,11 @@ public final class BackendUserRole: Model {
         return try Node(node: [
             "id": id,
             "title": title.value,
-            "slug": slug,
+            "slug": slug.value,
             "is_default": isDefault,
             "created_at": createdAt.string(custom: "yyyy-MM-dd HH:mm:ss"),
             "updated_at": updatedAt.string(custom: "yyyy-MM-dd HH:mm:ss")
-            ])
+        ])
     }
     
     public static func prepare(_ database: Database) throws {

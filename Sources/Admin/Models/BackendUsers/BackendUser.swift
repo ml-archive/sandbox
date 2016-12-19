@@ -63,14 +63,14 @@ public final class BackendUser: Auth.User, Model {
         self.updatedAt = DateInRegion()
         self.createdAt = DateInRegion()
     }
-    //
+    
     public init(request: Request) throws {
         name = try (request.data["name"]?.string ?? "").validated()
         email = try request.data["email"].validated()
         
         // Random password if no password is set
         if let passwordString: String = request.data["password"]?.string {
-            _ = try passwordString.validated(by: PasswordISO123())
+            _ = try passwordString.validated(by: PasswordStrong())
             
             if(passwordString != "") {
                 throw Abort.badRequest

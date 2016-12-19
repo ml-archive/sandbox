@@ -1,6 +1,6 @@
 import Vapor
 
-public class PasswordISO123: ValidationSuite {
+public class PasswordStrong: ValidationSuite {
     public static func validate(input value: String) throws {
         // TODO - do not validate hashed
         
