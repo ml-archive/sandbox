@@ -7,7 +7,7 @@ import Foundation
 import VaporRedis
 import Bugsnag
 //import Error
-import Admin
+import AdminPanel
 import VaporMySQL
 import Auth
 import Sessions
@@ -18,24 +18,10 @@ drop.view = LeafRenderer(
     viewsDir: Droplet().workDir + "Sources/AdminPanel/Resources/Views"
 )
 
-if let leaf = drop.view as? LeafRenderer {
-    leaf.stem.register(ActiveLeafTag())
-}
-
 try drop.addProvider(VaporMySQL.Provider.self)
 
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
-
-// Admin panel
-drop.group(AuthMiddleware<BackendUser>(), FlashMiddleware()) { auth in
-    auth.grouped("/").collection(Admin.LoginRoutes(droplet: drop))
-    
-    auth.group(Admin.AuthRedirectMiddleware(), ProtectMiddleware(error: AuthError.notAuthenticated)) { secured in
-        secured.grouped("/admin/dashboard").collection(Admin.DashboardRoutes(droplet: drop))
-        secured.grouped("/admin/backend_users").collection(Admin.BackendUsersRoutes(droplet: drop))
-        secured.grouped("/admin/backend_users/roles").collection(Admin.BackendUserRolesRoutes(droplet: drop))
-    }
-}
+try drop.addProvider(AdminPanel.Provider(drop: drop))
 
 //API
 drop.group(AuthMiddleware<User>()) { auth in
@@ -86,9 +72,7 @@ drop.group(AuthMiddleware<User>()) { auth in
 
 
 
-drop.preparations.append(Admin.BackendUserResetPasswordTokens.self)
-drop.preparations.append(Admin.BackendUserRole.self)
-drop.preparations.append(Admin.BackendUser.self)
+
 //drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
 
