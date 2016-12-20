@@ -20,7 +20,6 @@ drop.view = LeafRenderer(
 
 try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(AdminPanel.Provider.self)
-//try drop.addProvider(Storage.Provider.self)
 
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
