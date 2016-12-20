@@ -11,6 +11,7 @@ import AdminPanel
 import VaporMySQL
 import Auth
 import Sessions
+//import Storage
 
 let drop = Droplet()
 
@@ -19,7 +20,8 @@ drop.view = LeafRenderer(
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
-try drop.addProvider(AdminPanel.Provider(drop: drop))
+try drop.addProvider(AdminPanel.Provider.self)
+//try drop.addProvider(Storage.Provider.self)
 
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
