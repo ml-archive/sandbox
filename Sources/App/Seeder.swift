@@ -1,5 +1,5 @@
 import Console
-import Admin
+import AdminPanel
 import TurnstileCrypto
 
 public final class Seeder: Command {
@@ -20,17 +20,17 @@ public final class Seeder: Command {
         console.info("Started the seeder");
         
         let backendUserRoles = [
-            try Admin.BackendUserRole(node: [
+            try AdminPanel.BackendUserRole(node: [
                     "title": "Super admin",
                     "slug": "super-admin",
                     "is_default": false,
                 ]),
-            try Admin.BackendUserRole(node: [
+            try AdminPanel.BackendUserRole(node: [
                 "title": "Admin",
                 "slug": "admin",
                 "is_default": false,
                 ]),
-            try Admin.BackendUserRole(node: [
+            try AdminPanel.BackendUserRole(node: [
                 "title": "User",
                 "slug": "user",
                 "is_default": true,
@@ -50,7 +50,7 @@ public final class Seeder: Command {
         
         
         let backendUsers = [
-            try Admin.BackendUser(node: [
+            try AdminPanel.BackendUser(node: [
                 "name": "Admin",
                 "email": "tech@nodes.dk",
                 "password": BCrypt.hash(password: "admin"),
