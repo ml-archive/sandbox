@@ -3,5 +3,5 @@ Packages
 .idea
 xcuserdata
 *.xcodeproj
-Config/secrets/
+Config/secret/
 .DS_Store
