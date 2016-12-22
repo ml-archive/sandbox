@@ -12,6 +12,8 @@ import VaporMySQL
 import Auth
 import Sessions
 import Storage
+import SMTP
+
 let drop = Droplet()
 
 drop.view = LeafRenderer(
@@ -126,7 +128,27 @@ drop.get("seeder") { request in
 }
 
 drop.get("test") { request in
-    return "test"
+    
+    
+    let credentials = SMTPCredentials(
+        user: "server-admin-login",
+        pass: "secret-server-password"
+    )
+    
+    let from = EmailAddress(name: "Password Reset",
+                            address: "noreply@myapp.com")
+    let to = "some-user@random.com"
+    /*
+    let email: Email = Email(from: from,
+                             to: to,
+                             subject: "Vapor SMTP - Simple",
+                             body: "Hello from Vapor SMTP 👋")
+    
+    let client = try SMTPClient<TCPClientStream>.makeGmailClient()
+    try client.send(email, using: credentials)
+    */
+    
+    return ""
 }
 
 
