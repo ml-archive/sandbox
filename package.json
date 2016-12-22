@@ -1,0 +1,19 @@
+{
+  "name": "sandbox",
+  "version": "1.0.0",
+  "description": "A basic vapor template for starting a new Vapor web application. If you're using vapor toolbox, you can use: `vapor new --template=basic`",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nodes-vapor/sandbox.git"
+  },
+  "author": "Dennis Haulund Nielsen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nodes-vapor/sandbox/issues"
+  },
+  "homepage": "https://github.com/nodes-vapor/sandbox#readme"
+}
