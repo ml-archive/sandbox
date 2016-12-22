@@ -1,5 +1,4 @@
 import Console
-import AdminPanel
 import TurnstileCrypto
 
 public final class Seeder: Command {
@@ -18,7 +17,6 @@ public final class Seeder: Command {
     public func run(arguments: [String]) throws {
         
         console.info("Started the seeder");
-        
         
         console.info("Finished the seeder");
     }

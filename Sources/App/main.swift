@@ -123,7 +123,7 @@ let log = drop.log.self
 let translate = drop.nstack?.application.translate.self
 
 drop.get("seeder") { request in
-    try AdminPanel.Seeder(console: drop.console).run(arguments: [])
+    try AdminPanel.Seeder(drop: drop).run(arguments: [])
     return "seeded"
 }
 
