@@ -22,7 +22,7 @@ try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(AdminPanel.Provider(drop: drop))
 
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
-try drop.addProvider(StorageProvider.self)
+//try drop.addProvider(StorageProvider.self)
 
 //drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
