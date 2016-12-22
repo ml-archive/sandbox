@@ -11,7 +11,7 @@ import AdminPanel
 import VaporMySQL
 import Auth
 import Sessions
-
+import Storage
 let drop = Droplet()
 
 drop.view = LeafRenderer(
@@ -19,10 +19,10 @@ drop.view = LeafRenderer(
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
-//try drop.addProvider(AdminPanel.Provider.self)
 try drop.addProvider(AdminPanel.Provider(drop: drop))
 
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
+try drop.addProvider(StorageProvider.self)
 
 //drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
@@ -123,6 +123,10 @@ let translate = drop.nstack?.application.translate.self
 drop.get("seeder") { request in
     try AdminPanel.Seeder(console: drop.console).run(arguments: [])
     return "seeded"
+}
+
+drop.get("test") { request in
+    return "test"
 }
 
 
