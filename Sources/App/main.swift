@@ -18,10 +18,12 @@ drop.view = LeafRenderer(
     viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.1.1/Sources/AdminPanel/Resources/Views"
 )
 
+drop.commands.append(NodesUICommand(console: drop.console))
+
 try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(AdminPanel.Provider(drop: drop))
 
-try drop.addProvider(VaporRedis.Provider(config: drop.config))
+//try drop.addProvider(VaporRedis.Provider(config: drop.config))
 //try drop.addProvider(StorageProvider.self)
 
 //drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
