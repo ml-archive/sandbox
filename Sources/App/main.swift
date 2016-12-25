@@ -3,7 +3,7 @@ import Meta
 import NStack
 import SwiftyBeaverVapor
 import SwiftyBeaver
-import Foundation
+//import Foundation
 import VaporRedis
 import Bugsnag
 //import Error
@@ -14,6 +14,8 @@ import Sessions
 import Storage
 import SMTP
 import Slugify
+import Transport
+//import SMTP
 
 let drop = Droplet()
 
@@ -30,6 +32,8 @@ try drop.addProvider(StorageProvider.self)
 //drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
 
+BackendUser.database = drop.database
+//  print(try BackendUser.query().filter("id", .greaterThanOrEquals, "").all())
 
 //API
 /*
@@ -138,31 +142,32 @@ drop.get("slug",":slug") { request in
 }
 
 
-/*
+
 drop.get("test") { request in
     
     
     let credentials = SMTPCredentials(
-        user: "server-admin-login",
-        pass: "secret-server-password"
+        user: drop.config["mail", "user"]?.string ?? "",
+        pass: drop.config["mail", "password"]?.string ?? ""
     )
     
-    let from = EmailAddress(name: "Password Reset",
-                            address: "noreply@myapp.com")
-    let to = "some-user@random.com"
-    /*
-    let email: Email = Email(from: from,
+    let from = EmailAddress(name: drop.config["mail", "fromName"]?.string ?? "Default name",
+                            address: drop.config["mail", "fromEmail"]?.string ?? "Default email")
+    let to = "cr@nodes.dk"
+    
+    let a = try drop.view.make("Login/login").data.string()
+    
+    let email: SMTP.Email = Email(from: from,
                              to: to,
                              subject: "Vapor SMTP - Simple",
-                             body: "Hello from Vapor SMTP 👋")
+                             body: EmailBody(type: .html, content: a))
     
-    let client = try SMTPClient<TCPClientStream>.makeGmailClient()
+    let client = try SMTPClient<TCPClientStream>.makeMailgunClient()
     try client.send(email, using: credentials)
-    */
+    
     
     return ""
 }
- */
 
 
 drop.run()
