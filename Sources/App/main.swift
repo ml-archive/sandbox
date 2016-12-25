@@ -13,21 +13,23 @@ import Auth
 import Sessions
 import Storage
 import SMTP
+import Slugify
 
 let drop = Droplet()
 
 drop.view = LeafRenderer(
-    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.1.1/Sources/AdminPanel/Resources/Views"
+    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.1.5/Sources/AdminPanel/Resources/Views"
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(AdminPanel.Provider(drop: drop))
 
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
-//try drop.addProvider(StorageProvider.self)
+try drop.addProvider(StorageProvider.self)
 
 //drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
+
 
 //API
 /*
@@ -127,6 +129,16 @@ drop.get("seeder") { request in
     return "seeded"
 }
 
+
+drop.get("slug",":slug") { request in
+    guard let slug: String = request.parameters["slug"]?.string else {
+        throw Abort.badRequest
+    }
+    return slug.slugify()
+}
+
+
+/*
 drop.get("test") { request in
     
     
@@ -150,6 +162,7 @@ drop.get("test") { request in
     
     return ""
 }
+ */
 
 
 drop.run()

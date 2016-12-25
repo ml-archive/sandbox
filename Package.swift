@@ -23,8 +23,8 @@ let package = Package(
         .Package(url:"https://github.com/siemensikkema/vapor-jwt.git", majorVersion: 0, minor: 4),
         //.Package(url: "https://github.com/BrettRToomey/Jobs.git", majorVersion: 0)
         .Package(url: "https://github.com/nodes-vapor/admin-panel.git", majorVersion: 0),
-        .Package(url: "https://github.com/nodes-vapor/storage", majorVersion: 0),
-        .Package(url: "https://github.com/nodes-vapor/slugify", majorVersion: 0)
+        .Package(url: "https://github.com/nodes-vapor/storage", majorVersion: 0)
+        
         
     ],
     exclude: [
