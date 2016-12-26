@@ -162,7 +162,9 @@ drop.get("test") { request in
                              subject: "Vapor SMTP - Simple",
                              body: EmailBody(type: .html, content: a))
     
-    let client = try SMTPClient<TCPClientStream>.makeMailgunClient()
+    
+    let client = try SMTPClient<TCPClientStream>(host: "smtp.mailgun.org", port: 465, securityLayer: SecurityLayer.tls(nil))
+
     try client.send(email, using: credentials)
     
     
