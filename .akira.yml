@@ -1,0 +1,9 @@
+project:
+    name: vapor-sandbox
+    type: vapor
+prepare:
+- mysql
+config:
+    database: /Config/mysql.json
+docker_template: "vapor-default"
+docker_beta: true
