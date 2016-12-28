@@ -11,8 +11,7 @@
             "abort",
             "validation",
             "type-safe",
-            "date",
-            "sessions"
+            "date"
         ],
         "client": [
         

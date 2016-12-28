@@ -12,15 +12,11 @@ import VaporMySQL
 import Auth
 import Sessions
 import Storage
-import SMTP
-import Slugify
-import Transport
-//import SMTP
 
 let drop = Droplet()
 
 drop.view = LeafRenderer(
-    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.1.5/Sources/AdminPanel/Resources/Views"
+    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.1.6/Sources/AdminPanel/Resources/Views"
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
@@ -29,11 +25,10 @@ try drop.addProvider(AdminPanel.Provider(drop: drop))
 try drop.addProvider(VaporRedis.Provider(config: drop.config))
 try drop.addProvider(StorageProvider.self)
 
-//drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
-drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
+drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 
-BackendUser.database = drop.database
-//  print(try BackendUser.query().filter("id", .greaterThanOrEquals, "").all())
+print(drop.middleware)
+//drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
 
 //API
 /*
@@ -128,47 +123,10 @@ let log = drop.log.self
 
 let translate = drop.nstack?.application.translate.self
 
-drop.get("seeder") { request in
-    //try AdminPanel.Seeder(drop: drop).run(arguments: [])
-    return "seeded"
-}
-
-
-drop.get("slug",":slug") { request in
-    guard let slug: String = request.parameters["slug"]?.string else {
-        throw Abort.badRequest
-    }
-    return slug.slugify()
-}
-
-
 
 drop.get("test") { request in
-    
-    
-    let credentials = SMTPCredentials(
-        user: drop.config["mail", "user"]?.string ?? "",
-        pass: drop.config["mail", "password"]?.string ?? ""
-    )
-    
-    let from = EmailAddress(name: drop.config["mail", "fromName"]?.string ?? "Default name",
-                            address: drop.config["mail", "fromEmail"]?.string ?? "Default email")
-    let to = "cr@nodes.dk"
-    
-    let a = try drop.view.make("Login/login").data.string()
-    
-    let email: SMTP.Email = Email(from: from,
-                             to: to,
-                             subject: "Vapor SMTP - Simple",
-                             body: EmailBody(type: .html, content: a))
-    
-    
-    let client = try SMTPClient<TCPClientStream>(host: "smtp.mailgun.org", port: 465, securityLayer: SecurityLayer.tls(nil))
-
-    try client.send(email, using: credentials)
-    
-    
-    return ""
+    try request.session().data["test"] = "test"
+    return "here"
 }
 
 
