@@ -16,7 +16,7 @@ import Storage
 let drop = Droplet()
 
 drop.view = LeafRenderer(
-    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.1.6/Sources/AdminPanel/Resources/Views"
+    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.2.0/Sources/AdminPanel/Resources/Views"
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
@@ -27,7 +27,6 @@ try drop.addProvider(StorageProvider.self)
 
 drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 
-print(drop.middleware)
 //drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
 
 //API
@@ -124,9 +123,8 @@ let log = drop.log.self
 let translate = drop.nstack?.application.translate.self
 
 
-drop.get("test") { request in
-    try request.session().data["test"] = "test"
-    return "here"
+drop.get("ip") { request in
+    return request.peerAddress?.address().string ?? "none"
 }
 
 
