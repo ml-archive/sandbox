@@ -12,7 +12,7 @@ import VaporMySQL
 import Auth
 import Sessions
 import Storage
-
+import Foundation
 let drop = Droplet()
 
 drop.view = LeafRenderer(
@@ -21,8 +21,10 @@ drop.view = LeafRenderer(
 
 try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(AdminPanel.Provider(drop: drop))
+let d = Date()
+ISO8601Format
 
-try drop.addProvider(VaporRedis.Provider(config: drop.config))
+//try drop.addProvider(VaporRedis.Provider(config: drop.config))
 try drop.addProvider(StorageProvider.self)
 
 drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
@@ -90,7 +92,7 @@ drop.group(AuthMiddleware<User>()) { auth in
 
 //try drop.middleware.append(MetaMiddleware(drop: drop))
 
-//try drop.addProvider(NStackProvider(drop: drop))
+try drop.addProvider(NStackProvider(drop: drop))
 //try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 /*
@@ -115,10 +117,10 @@ let log = drop.log.self
 
 */
 
-//try print(drop.nstack?.application.translate.get(platform: .backend, section: "default", key: "saveSuccess", replace: ["model": "test"]))
-//try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
-//try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
-//try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
+try print(drop.nstack?.application.translate.get(platform: .backend, section: "default", key: "saveSuccess", replace: ["model": "test"]))
+try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
+try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
+try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
 
 let translate = drop.nstack?.application.translate.self
 
