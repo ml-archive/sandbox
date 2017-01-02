@@ -11,7 +11,7 @@ import AdminPanel
 import VaporMySQL
 import Auth
 import Sessions
-import Storage
+//import Storage
 import Foundation
 let drop = Droplet()
 
@@ -23,7 +23,7 @@ try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(AdminPanel.Provider(drop: drop))
 
 //try drop.addProvider(VaporRedis.Provider(config: drop.config))
-try drop.addProvider(StorageProvider.self)
+//try drop.addProvider(StorageProvider.self)
 
 drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 
