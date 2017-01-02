@@ -16,7 +16,7 @@ import Foundation
 let drop = Droplet()
 
 drop.view = LeafRenderer(
-    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.2.0/Sources/AdminPanel/Resources/Views"
+    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.3.2/Sources/AdminPanel/Resources/Views"
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
@@ -90,7 +90,7 @@ drop.group(AuthMiddleware<User>()) { auth in
 
 //try drop.middleware.append(MetaMiddleware(drop: drop))
 
-try drop.addProvider(NStackProvider(drop: drop))
+//try drop.addProvider(NStackProvider(drop: drop))
 //try drop.addProvider(VaporRedis.Provider(config: drop.config))
 
 /*
@@ -113,19 +113,26 @@ drop.addProvider(sbProvider)
 // shortcut to avoid writing app.log all the time
 let log = drop.log.self
 
-*/
 
+*/
+/*
 try print(drop.nstack?.application.translate.get(platform: .backend, section: "default", key: "saveSuccess", replace: ["model": "test"]))
 try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
 try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
 try print(drop.nstack?.application.translate.get(platform: "backend2", language: "en-UK", section: "default", key: "saveSuccess", replace: ["model": "test"]))
 
 let translate = drop.nstack?.application.translate.self
-
+*/
 
 drop.get("ip") { request in
     return request.peerAddress?.address().string ?? "none"
 }
+
+drop.get("seeder") { request in
+    try AdminPanel.Seeder(drop: drop).run(arguments: [])
+    return "seeded"
+}
+
 
 
 drop.run()
