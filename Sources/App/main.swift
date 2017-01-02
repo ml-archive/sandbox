@@ -21,8 +21,6 @@ drop.view = LeafRenderer(
 
 try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(AdminPanel.Provider(drop: drop))
-let d = Date()
-ISO8601Format
 
 //try drop.addProvider(VaporRedis.Provider(config: drop.config))
 try drop.addProvider(StorageProvider.self)
