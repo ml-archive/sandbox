@@ -1,7 +1,7 @@
 import XCTest
 @testable import SandboxTests
 
-class NStackTests: XCTestCase {
+class SandboxTests: XCTestCase {
     func test() {
         XCTAssertTrue(true)
     }
