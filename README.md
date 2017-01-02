@@ -1,15 +1,6 @@
-# Basic Template
+# Sandbox
+[![Language](https://img.shields.io/badge/Swift-3-brightgreen.svg)](http://swift.org)
+[![Build Status](https://travis-ci.org/nodes-vapor/sandbox.svg?branch=master)](https://travis-ci.org/nodes-vapor/sandbox)
+[![codecov](https://codecov.io/gh/nodes-vapor/sandbox/branch/master/graph/badge.svg)](https://codecov.io/gh/nodes-vapor/sandbox)
 
-A basic vapor template for starting a new Vapor web application. If you're using vapor toolbox, you can use: `vapor new --template=basic`
-
-## 📖 Documentation
-
-Visit the Vapor web framework's [documentation](http://docs.vapor.codes) for instructions on how to use this package.
-
-## 💧 Community
-
-Join the welcoming community of fellow Vapor developers in [slack](http://vapor.team).
-
-## 🔧 Compatibility
-
-This package has been tested on macOS and Ubuntu.
+This is just a sandbox for testing out things
