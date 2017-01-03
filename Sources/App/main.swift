@@ -20,7 +20,7 @@ drop.view = LeafRenderer(
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
-try drop.addProvider(AdminPanel.Provider(drop: drop))
+try drop.addProvider(AdminPanel.Provider(drop: drop, ssoProvider: NodesSSO(droplet: drop)))
 
 //try drop.addProvider(VaporRedis.Provider(config: drop.config))
 //try drop.addProvider(StorageProvider.self)
