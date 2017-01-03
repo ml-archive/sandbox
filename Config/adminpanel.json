@@ -7,6 +7,9 @@
     "welcomeMailViewPath": "Emails/welcome",
     "resetPasswordViewPath": "Emails/reset-password",
     "autoLoginFirstUser": true,
-    "ssoRedirectUrl": "https://www.ournodes.com/sso/vapor-sandbox/environment",
-    "ssoCallbackPath": "/admin/manager_auth"
+    
+    
+    "ssoRedirectUrl": "https://www.ournodes.com/sso/vapor-sandbox/$environment",
+    "ssoCallbackPath": "/admin/manager_auth",
+    "nodesSSOSalt": "#$email_NODESSALT_token"
 }
