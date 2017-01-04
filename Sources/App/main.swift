@@ -13,10 +13,11 @@ import Auth
 import Sessions
 //import Storage
 import Foundation
+import AdminPanelNodesSSO
 let drop = Droplet()
 
 drop.view = LeafRenderer(
-    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.3.3/Sources/AdminPanel/Resources/Views"
+    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.5.0/Sources/AdminPanel/Resources/Views"
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
@@ -24,7 +25,6 @@ try drop.addProvider(AdminPanel.Provider(drop: drop, ssoProvider: NodesSSO(dropl
 
 //try drop.addProvider(VaporRedis.Provider(config: drop.config))
 //try drop.addProvider(StorageProvider.self)
-
 drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
 
 //drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
@@ -129,7 +129,7 @@ drop.get("ip") { request in
 }
 
 drop.get("seeder") { request in
-    try AdminPanel.Seeder(drop: drop).run(arguments: [])
+    try AdminPanel.Seeder(dropet: drop).run(arguments: [])
     return "seeded"
 }
 
