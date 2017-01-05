@@ -17,16 +17,28 @@ import AdminPanelNodesSSO
 let drop = Droplet()
 
 drop.view = LeafRenderer(
-    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.5.1/Sources/AdminPanel/Resources/Views"
+    viewsDir: Droplet().workDir + "/Packages/AdminPanel-0.5.4/Sources/AdminPanel/Resources/Views"
 )
 
 try drop.addProvider(VaporMySQL.Provider.self)
 try drop.addProvider(AdminPanel.Provider(drop: drop, ssoProvider: NodesSSO(droplet: drop)))
 
-//try drop.addProvider(VaporRedis.Provider(config: drop.config))
+try drop.addProvider(VaporRedis.Provider(config: drop.config))
 //try drop.addProvider(StorageProvider.self)
 drop.middleware.append(SessionsMiddleware(sessions: CacheSessions(cache: drop.cache)))
+//try drop.middleware.append(MetaMiddleware(drop: drop))
+/*
+drop.group(AdminPanelMiddleware(droplet: drop)) { unsecured in
+    unsecured.grouped("/").collection(LoginRoutes(droplet: drop, config: AdminPanel.Configuration.shared!))
+}
+ 
 
+drop.group(AdminPanelProtectedMiddleware(droplet: drop)) { secured in
+    secured.grouped("/admin/dashboard").collection(DashboardRoutes(droplet: drop))
+    secured.grouped("/admin/backend_users").collection(BackendUsersRoutes(droplet: drop))
+    secured.grouped("/admin/backend_users/roles").collection(BackendUserRolesRoutes(droplet: drop))
+}
+*/
 //drop.middleware.append(SessionsMiddleware(sessions: MemorySessions()))
 
 //API
@@ -88,7 +100,7 @@ drop.group(AuthMiddleware<User>()) { auth in
 //drop.middleware.append(ErrorMiddleware())
 //try drop.middleware.append(BugsnagMiddleware(drop: drop))
 
-//try drop.middleware.append(MetaMiddleware(drop: drop))
+
 
 //try drop.addProvider(NStackProvider(drop: drop))
 //try drop.addProvider(VaporRedis.Provider(config: drop.config))

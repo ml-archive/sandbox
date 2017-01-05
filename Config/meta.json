@@ -13,7 +13,10 @@
         "production"
     ],
     "exceptPaths": [
-        "/test"
+        "/images/",
+        "/css/",
+        "/js/",
+        "/favicons/"        
     ],
     "requiredEnvironments": [
         "local",
